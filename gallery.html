@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Gallery · The Beauty Loft</title>
 <meta name="description" content="A curated selection of recent work — color, cuts, lashes and bridal." />
-<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='80' font-family='serif' fill='%23d4af37'>B</text></svg>">
+<link rel="icon" type="image/png" href="public/logona.png">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&family=Italianno&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="assets/main.css" />
@@ -24,7 +24,7 @@
 </head>
 <body>
 
-<div class="page-loader"><div class="page-loader-inner"><div class="page-loader-logo">The Beauty Loft</div><div class="page-loader-bar"></div></div></div>
+<div class="page-loader"><div class="page-loader-inner"><img src="public/logona.png" alt="The Beauty Loft" class="page-loader-logo-img"><div class="page-loader-bar"></div></div></div>
 <div id="scroll-progress" style="position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#a88a2e,#d4af37,#f4e4ba);width:0;z-index:101"></div>
 
 <div class="bg-[#0a0a0a] text-[#d4af37] py-2.5 px-6 text-center border-b border-[#d4af37]/15">
@@ -36,12 +36,8 @@
 
 <header id="navbar" class="sticky top-0 z-50 bg-[#050505]/95 backdrop-blur-md border-b border-[#d4af37]/10">
   <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
-    <a href="index.html" class="flex items-center gap-3">
-      <div class="w-10 h-10 rounded-full border border-[#d4af37] flex items-center justify-center font-display text-[#d4af37] text-xl">B</div>
-      <div class="flex flex-col">
-        <span class="font-display text-lg leading-none gold-text-gradient">The Beauty Loft</span>
-        <span class="text-[10px] tracking-[.32em] uppercase text-[#7a7a7a] mt-1" data-i18n="footer.tag"></span>
-      </div>
+    <a href="index.html" class="flex items-center">
+      <img src="public/logona.png" alt="The Beauty Loft" class="brand-logo">
     </a>
     <nav class="hidden lg:flex items-center gap-8">
       <a href="index.html" class="nav-link" data-i18n="nav.home"></a>

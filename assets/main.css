@@ -305,6 +305,19 @@ label.input-label{
   letter-spacing:.04em;
   animation:loaderPulse 1.4s ease-in-out infinite;
 }
+.page-loader-logo-img{
+  width:160px; height:auto;
+  filter:drop-shadow(0 0 30px rgba(212,175,55,.4));
+  animation:loaderPulse 1.6s ease-in-out infinite;
+}
+.brand-logo{
+  height:52px; width:auto;
+  filter:drop-shadow(0 2px 8px rgba(212,175,55,.2));
+  transition:filter .3s, transform .3s;
+}
+.brand-logo:hover{ filter:drop-shadow(0 2px 16px rgba(212,175,55,.5)); transform:scale(1.02); }
+.brand-logo-sm{ height:44px; }
+.brand-logo-lg{ height:80px; }
 @keyframes loaderPulse{
   0%,100%{ opacity:.5; transform:scale(.96); }
   50%{ opacity:1; transform:scale(1); }
