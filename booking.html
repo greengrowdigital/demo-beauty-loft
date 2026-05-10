@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Book an appointment · The Beauty Loft</title>
+<meta name="description" content="Reserve your moment. Choose service, stylist and time. Confirmation arrives in seconds." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='80' font-family='serif' fill='%23d4af37'>B</text></svg>">
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&family=Italianno&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/main.css" />
+<style>
+.step-panel{ display:none; animation:fadeStep .5s ease both; }
+.step-panel.active{ display:block; }
+@keyframes fadeStep{ from{ opacity:0; transform:translateY(20px); } to{ opacity:1; transform:translateY(0); } }
+.svc-card{ cursor:pointer; transition:all .3s; }
+.svc-card.selected{ border-color:#d4af37; background:linear-gradient(180deg,rgba(212,175,55,.06),rgba(212,175,55,.02)); }
+.stylist-card{ cursor:pointer; transition:all .35s; }
+.stylist-card.selected{ border-color:#d4af37; transform:translateY(-4px); box-shadow:0 24px 60px -20px rgba(212,175,55,.4); }
+.day-cell{ cursor:pointer; transition:all .25s; aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; border:1px solid transparent; border-radius:50%; }
+.day-cell:hover:not(.disabled){ border-color:#d4af37; color:#d4af37; }
+.day-cell.selected{ background:#d4af37; color:#000; border-color:#d4af37; }
+.day-cell.disabled{ opacity:.25; cursor:not-allowed; }
+.day-cell.today{ outline:1px dashed rgba(212,175,55,.5); outline-offset:-4px; }
+.summary-card{ position:sticky; top:120px; }
+@media (max-width:1023px){ .summary-card{ position:relative; top:0; } }
+.fade-success{ animation:successPulse 1.4s ease both; }
+@keyframes successPulse{
+  0%{ transform:scale(.6); opacity:0; }
+  50%{ transform:scale(1.05); opacity:1; }
+  100%{ transform:scale(1); opacity:1; }
+}
+.checkmark{ stroke-dasharray:100; stroke-dashoffset:100; animation:drawCheck 1s ease .3s forwards; }
+@keyframes drawCheck{ to{ stroke-dashoffset:0; } }
+</style>
+</head>
+<body>
+
+<div class="page-loader"><div class="page-loader-inner"><div class="page-loader-logo">The Beauty Loft</div><div class="page-loader-bar"></div></div></div>
+<div id="scroll-progress" style="position:fixed;top:0;left:0;height:2px;background:linear-gradient(90deg,#a88a2e,#d4af37,#f4e4ba);width:0;z-index:101"></div>
+
+<!-- Top bar -->
+<div class="bg-[#0a0a0a] text-[#d4af37] py-2.5 px-6 text-center border-b border-[#d4af37]/15">
+  <div class="text-xs tracking-[.32em] uppercase">
+    <span data-i18n="top.bar"></span><span class="mx-4 opacity-50">·</span>
+    <a href="contact.html" class="underline underline-offset-4 hover:text-[#f4e4ba]">+1 (212) 555-0100</a>
+  </div>
+</div>
+
+<!-- Navbar -->
+<header id="navbar" class="sticky top-0 z-50 bg-[#050505]/95 backdrop-blur-md border-b border-[#d4af37]/10">
+  <div class="max-w-7xl mx-auto flex items-center justify-between px-6 py-5">
+    <a href="index.html" class="flex items-center gap-3">
+      <div class="w-10 h-10 rounded-full border border-[#d4af37] flex items-center justify-center font-display text-[#d4af37] text-xl">B</div>
+      <div class="flex flex-col">
+        <span class="font-display text-lg leading-none gold-text-gradient">The Beauty Loft</span>
+        <span class="text-[10px] tracking-[.32em] uppercase text-[#7a7a7a] mt-1" data-i18n="footer.tag"></span>
+      </div>
+    </a>
+    <nav class="hidden lg:flex items-center gap-8">
+      <a href="index.html" class="nav-link" data-i18n="nav.home"></a>
+      <a href="services.html" class="nav-link" data-i18n="nav.services"></a>
+      <a href="gallery.html" class="nav-link" data-i18n="nav.gallery"></a>
+      <a href="about.html" class="nav-link" data-i18n="nav.about"></a>
+      <a href="contact.html" class="nav-link" data-i18n="nav.contact"></a>
+    </nav>
+    <div class="flex items-center gap-3">
+      <button class="lang-toggle" data-lang-toggle><span data-lang="en">EN</span><span class="opacity-30">/</span><span data-lang="es">ES</span></button>
+      <button id="mobile-menu-trigger" class="show-mobile w-10 h-10 flex flex-col items-center justify-center gap-1 border border-[#d4af37]/30">
+        <span class="w-4 h-px bg-[#d4af37]"></span><span class="w-4 h-px bg-[#d4af37]"></span><span class="w-4 h-px bg-[#d4af37]"></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div id="mobile-menu" class="mobile-menu">
+  <button id="mobile-menu-close" class="absolute top-6 right-6 w-12 h-12 border border-[#d4af37]/40 text-[#d4af37] text-2xl flex items-center justify-center">×</button>
+  <nav>
+    <a href="index.html" data-i18n="nav.home"></a>
+    <a href="services.html" data-i18n="nav.services"></a>
+    <a href="gallery.html" data-i18n="nav.gallery"></a>
+    <a href="about.html" data-i18n="nav.about"></a>
+    <a href="contact.html" data-i18n="nav.contact"></a>
+  </nav>
+</div>
+
+<!-- Hero -->
+<section class="relative py-16 md:py-24 px-6 border-b border-[#d4af37]/10 overflow-hidden">
+  <div class="hero-bg"><img src="https://images.unsplash.com/photo-1521336575822-6da63fb45455?w=2000&auto=format&fit=crop" alt=""></div>
+  <div class="absolute inset-0 bg-gradient-to-b from-[#050505]/70 to-[#050505]"></div>
+  <div class="relative max-w-5xl mx-auto text-center reveal">
+    <div class="ornament mb-6 max-w-sm mx-auto"><span data-i18n="booking.hero.eyebrow"></span></div>
+    <h1 class="font-display text-5xl md:text-7xl mb-5 gold-text-gradient" data-i18n="booking.hero.title"></h1>
+    <p class="text-[#d4d4d4] max-w-xl mx-auto" data-i18n="booking.hero.subtitle"></p>
+  </div>
+</section>
+
+<!-- Step indicator -->
+<section class="bg-[#0a0a0a] border-b border-[#d4af37]/10 py-6 px-6 sticky top-[72px] z-40 backdrop-blur-md">
+  <div class="max-w-5xl mx-auto flex items-center gap-2 md:gap-4">
+    <div class="step-dot active" data-step-dot="1">1</div>
+    <div class="step-line" data-step-line="1"></div>
+    <div class="step-dot" data-step-dot="2">2</div>
+    <div class="step-line" data-step-line="2"></div>
+    <div class="step-dot" data-step-dot="3">3</div>
+    <div class="step-line" data-step-line="3"></div>
+    <div class="step-dot" data-step-dot="4">4</div>
+    <div class="step-line" data-step-line="4"></div>
+    <div class="step-dot" data-step-dot="5">5</div>
+  </div>
+  <div class="max-w-5xl mx-auto mt-3 hidden md:flex items-center text-[10px] tracking-[.3em] uppercase text-[#7a7a7a]">
+    <span class="w-9 text-center" data-i18n="booking.step1"></span>
+    <span class="flex-1"></span>
+    <span class="w-9 text-center" data-i18n="booking.step2"></span>
+    <span class="flex-1"></span>
+    <span class="w-20 text-center" data-i18n="booking.step3"></span>
+    <span class="flex-1"></span>
+    <span class="w-12 text-center" data-i18n="booking.step4"></span>
+    <span class="flex-1"></span>
+    <span class="w-12 text-center" data-i18n="booking.step5"></span>
+  </div>
+</section>
+
+<!-- Booking content -->
+<section class="py-12 md:py-16 px-6">
+  <div class="max-w-7xl mx-auto grid lg:grid-cols-12 gap-10">
+
+    <!-- Left: Steps -->
+    <div class="lg:col-span-8">
+
+      <!-- STEP 1: Service -->
+      <div id="step-1" class="step-panel active">
+        <h2 class="font-display text-3xl md:text-4xl mb-2 text-cream" data-i18n="booking.choose.service"></h2>
+        <p class="text-[#7a7a7a] text-sm mb-8" data-i18n="services.note"></p>
+
+        <div class="flex gap-2 overflow-x-auto no-scrollbar mb-6 pb-2">
+          <button class="cat-tab btn-ghost btn flex-shrink-0 active" data-cat="all">All</button>
+          <button class="cat-tab btn-ghost btn flex-shrink-0" data-cat="hair" data-i18n="services.cat.hair"></button>
+          <button class="cat-tab btn-ghost btn flex-shrink-0" data-cat="color" data-i18n="services.cat.color"></button>
+          <button class="cat-tab btn-ghost btn flex-shrink-0" data-cat="lashes" data-i18n="services.cat.lashes"></button>
+          <button class="cat-tab btn-ghost btn flex-shrink-0" data-cat="skin" data-i18n="services.cat.skin"></button>
+          <button class="cat-tab btn-ghost btn flex-shrink-0" data-cat="waxing" data-i18n="services.cat.waxing"></button>
+          <button class="cat-tab btn-ghost btn flex-shrink-0" data-cat="treatments" data-i18n="services.cat.treatments"></button>
+          <button class="cat-tab btn-ghost btn flex-shrink-0" data-cat="extensions" data-i18n="services.cat.extensions"></button>
+        </div>
+
+        <div id="services-grid" class="grid sm:grid-cols-2 gap-3"></div>
+      </div>
+
+      <!-- STEP 2: Stylist -->
+      <div id="step-2" class="step-panel">
+        <h2 class="font-display text-3xl md:text-4xl mb-8 text-cream" data-i18n="booking.choose.stylist"></h2>
+        <div id="stylists-grid" class="grid sm:grid-cols-2 gap-4"></div>
+      </div>
+
+      <!-- STEP 3: Date & Time -->
+      <div id="step-3" class="step-panel">
+        <div class="grid md:grid-cols-2 gap-10">
+          <div>
+            <h2 class="font-display text-2xl md:text-3xl mb-6 text-cream" data-i18n="booking.choose.date"></h2>
+            <div class="card p-5">
+              <div class="flex items-center justify-between mb-4">
+                <button id="cal-prev" class="w-9 h-9 border border-[#d4af37]/30 flex items-center justify-center text-[#d4af37] hover:bg-[#d4af37]/10">‹</button>
+                <div id="cal-month" class="font-display text-xl text-cream"></div>
+                <button id="cal-next" class="w-9 h-9 border border-[#d4af37]/30 flex items-center justify-center text-[#d4af37] hover:bg-[#d4af37]/10">›</button>
+              </div>
+              <div class="grid grid-cols-7 gap-1 text-center text-[10px] tracking-[.2em] uppercase text-[#7a7a7a] mb-2">
+                <div>Sun</div><div>Mon</div><div>Tue</div><div>Wed</div><div>Thu</div><div>Fri</div><div>Sat</div>
+              </div>
+              <div id="cal-days" class="grid grid-cols-7 gap-1"></div>
+              <p class="text-[10px] tracking-[.2em] uppercase text-[#7a7a7a] mt-4 text-center">Closed Mondays</p>
+            </div>
+          </div>
+          <div>
+            <h2 class="font-display text-2xl md:text-3xl mb-6 text-cream" data-i18n="booking.choose.time"></h2>
+            <div id="time-slots" class="grid grid-cols-3 gap-2">
+              <div class="text-[#7a7a7a] text-sm col-span-3 py-12 text-center">← Pick a date first</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: Info -->
+      <div id="step-4" class="step-panel">
+        <h2 class="font-display text-3xl md:text-4xl mb-8 text-cream" data-i18n="booking.your.info"></h2>
+        <div class="grid sm:grid-cols-2 gap-5">
+          <div>
+            <label class="input-label" data-i18n="booking.first"></label>
+            <input id="f-first" type="text" class="input" required>
+          </div>
+          <div>
+            <label class="input-label" data-i18n="booking.last"></label>
+            <input id="f-last" type="text" class="input" required>
+          </div>
+          <div>
+            <label class="input-label" data-i18n="booking.phone"></label>
+            <input id="f-phone" type="tel" class="input" placeholder="(212) 555-0100" required>
+          </div>
+          <div>
+            <label class="input-label" data-i18n="booking.email"></label>
+            <input id="f-email" type="email" class="input" required>
+          </div>
+          <div class="sm:col-span-2">
+            <label class="input-label" data-i18n="booking.notes"></label>
+            <textarea id="f-notes" rows="4" class="input" data-i18n-placeholder="booking.notes.ph"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 5: Confirm + payment -->
+      <div id="step-5" class="step-panel">
+        <h2 class="font-display text-3xl md:text-4xl mb-3 text-cream" data-i18n="pay.title"></h2>
+        <p class="text-[#7a7a7a] text-xs tracking-[.3em] uppercase mb-8" data-i18n="pay.subtitle"></p>
+
+        <div class="grid sm:grid-cols-2 gap-3 mb-8">
+          <button id="pay-apple" class="btn bg-black text-white border border-white/20 w-full py-4">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17 14c0-2.5 2-3.7 2.1-3.7-1.1-1.7-2.9-1.9-3.5-2-1.5-.2-2.9.9-3.7.9s-1.9-.9-3.2-.8c-1.6 0-3.2 1-4 2.4-1.7 3-.4 7.4 1.2 9.7.8 1.2 1.8 2.5 3.1 2.4 1.2 0 1.7-.8 3.2-.8s1.9.8 3.2.8c1.3 0 2.2-1.2 3-2.4.9-1.4 1.3-2.7 1.3-2.7s-2.4-.9-2.4-3.5zM14.6 5.7c.7-.8 1.1-1.9 1-3.1-1 0-2.2.7-2.9 1.5-.6.7-1.2 1.9-1.1 3 1.1.1 2.3-.6 3-1.4z"/></svg>
+            <span data-i18n="pay.applePay"></span>
+          </button>
+          <button id="pay-google" class="btn bg-white text-black border border-white/20 w-full py-4">
+            <svg width="18" height="18" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.5 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.9c-.3 1.4-1 2.5-2.2 3.3v2.7h3.5c2-1.9 3.3-4.7 3.3-7.8z"/><path fill="#34A853" d="M12 23c2.9 0 5.4-1 7.2-2.6l-3.5-2.7c-1 .6-2.2 1-3.7 1-2.8 0-5.2-1.9-6.1-4.5H2.3v2.8C4.1 20.5 7.8 23 12 23z"/><path fill="#FBBC04" d="M5.9 14.2c-.4-.7-.5-1.4-.5-2.2s.2-1.5.5-2.2V7H2.3C1.5 8.5 1 10.2 1 12s.5 3.5 1.3 5l3.6-2.8z"/><path fill="#EA4335" d="M12 5.4c1.6 0 3 .5 4.1 1.6l3.1-3.1C17.4 2.1 14.9 1 12 1 7.8 1 4.1 3.5 2.3 7l3.6 2.8C6.8 7.3 9.2 5.4 12 5.4z"/></svg>
+            <span data-i18n="pay.googlePay"></span>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-4 mb-8">
+          <div class="flex-1 h-px bg-[#d4af37]/15"></div>
+          <span class="text-xs tracking-[.3em] uppercase text-[#7a7a7a]" data-i18n="pay.or"></span>
+          <div class="flex-1 h-px bg-[#d4af37]/15"></div>
+        </div>
+
+        <div class="space-y-5">
+          <div>
+            <label class="input-label" data-i18n="pay.cardNumber"></label>
+            <div class="relative">
+              <input id="f-card" type="text" inputmode="numeric" maxlength="19" placeholder="1234 5678 9012 3456" class="input pr-14">
+              <div id="card-brand" class="absolute right-3 top-1/2 -translate-y-1/2 text-[#7a7a7a] text-xs font-mono"></div>
+            </div>
+          </div>
+          <div class="grid grid-cols-3 gap-3">
+            <div>
+              <label class="input-label" data-i18n="pay.expiry"></label>
+              <input id="f-exp" type="text" maxlength="7" placeholder="MM / YY" class="input">
+            </div>
+            <div>
+              <label class="input-label" data-i18n="pay.cvc"></label>
+              <input id="f-cvc" type="text" inputmode="numeric" maxlength="4" placeholder="123" class="input">
+            </div>
+            <div>
+              <label class="input-label" data-i18n="pay.zip"></label>
+              <input id="f-zip" type="text" inputmode="numeric" maxlength="5" placeholder="10016" class="input">
+            </div>
+          </div>
+          <div>
+            <label class="input-label" data-i18n="pay.cardName"></label>
+            <input id="f-cardname" type="text" class="input">
+          </div>
+        </div>
+
+        <div class="mt-6 p-4 border border-[#d4af37]/20 bg-[#0a0a0a] flex items-start gap-3">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="1.6" class="flex-shrink-0 mt-0.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+          <p class="text-xs text-[#a3a3a3] leading-relaxed" data-i18n="booking.terms"></p>
+        </div>
+      </div>
+
+      <!-- SUCCESS -->
+      <div id="step-success" class="step-panel text-center py-16">
+        <div class="fade-success inline-flex w-24 h-24 rounded-full bg-[#d4af37]/15 border-2 border-[#d4af37] items-center justify-center mb-8">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#d4af37" stroke-width="2.4">
+            <path class="checkmark" d="M5 12l5 5 9-11"/>
+          </svg>
+        </div>
+        <h2 class="font-display text-4xl md:text-5xl mb-3 text-cream" data-i18n="booking.success.title"></h2>
+        <p class="text-[#a3a3a3] mb-8" data-i18n="booking.success.subtitle"></p>
+        <div class="font-mono text-xs tracking-[.3em] text-[#d4af37] mb-3">
+          <span data-i18n="booking.success.ref"></span>
+          <span> · </span>
+          <span id="success-ref"></span>
+        </div>
+        <div id="success-summary" class="max-w-md mx-auto mb-10"></div>
+        <div class="flex flex-wrap justify-center gap-3">
+          <button class="btn btn-gold gold-shine" onclick="downloadIcs()" data-i18n="booking.success.cta"></button>
+          <a href="index.html" class="btn btn-outline" data-i18n="booking.success.home"></a>
+        </div>
+      </div>
+
+      <!-- Navigation -->
+      <div id="nav-controls" class="flex justify-between mt-12 pt-8 border-t border-[#d4af37]/15">
+        <button id="btn-back" class="btn btn-ghost" data-i18n="booking.back" disabled style="opacity:.4;cursor:not-allowed"></button>
+        <button id="btn-next" class="btn btn-gold gold-shine" data-i18n="booking.next" disabled style="opacity:.4;cursor:not-allowed"></button>
+      </div>
+    </div>
+
+    <!-- Right: Summary -->
+    <aside class="lg:col-span-4">
+      <div class="summary-card card p-7">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="font-display text-xl text-cream" data-i18n="booking.summary"></h3>
+          <span class="text-[10px] tracking-[.3em] uppercase text-[#d4af37]">Live</span>
+        </div>
+
+        <div id="summary-content" class="space-y-5 text-sm">
+          <div class="text-[#7a7a7a] text-center py-8 italic">Your selections will appear here.</div>
+        </div>
+      </div>
+
+      <div class="mt-6 text-xs tracking-[.3em] uppercase text-[#7a7a7a] text-center">
+        🔒 Secure · 256-bit · Stripe
+      </div>
+    </aside>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-[#050505] border-t border-[#d4af37]/15 pt-16 pb-10 px-6 mt-20">
+  <div class="max-w-7xl mx-auto pt-6 flex flex-wrap justify-between text-xs tracking-[.3em] uppercase text-[#7a7a7a]">
+    <span data-i18n="footer.copyright"></span><span data-i18n="footer.demo"></span>
+  </div>
+</footer>
+
+<script src="assets/i18n.js"></script>
+<script src="assets/data.js"></script>
+<script src="assets/app.js"></script>
+<script>
+const STATE = {
+  step:1,
+  service:null,
+  stylist:null,
+  date:null, // YYYY-MM-DD
+  time:null,
+  customer:{},
+  payment:{},
+  ref:null
+};
+
+// Restore from URL ?service=ID
+const urlParams = new URLSearchParams(location.search);
+const initialService = urlParams.get('service');
+if (initialService) STATE.service = SERVICES.find(s => s.id === initialService) || PACKAGES.find(p => p.id === initialService) || null;
+
+let activeCat = 'all';
+
+// Render Step 1: services
+function renderServicesStep() {
+  const lang = window.I18nManager?.current || 'en';
+  const grid = document.getElementById('services-grid');
+  const items = SERVICES.filter(s => activeCat === 'all' || s.cat === activeCat);
+  grid.innerHTML = items.map(s => `
+    <div class="svc-card card p-4 ${STATE.service?.id===s.id?'selected':''}" data-svc="${s.id}">
+      <div class="flex items-start justify-between mb-2">
+        <h4 class="font-display text-lg text-cream">${s.name[lang]}</h4>
+        <span class="text-[10px] tracking-[.3em] uppercase text-[#7a7a7a]">${s.duration}m</span>
+      </div>
+      <p class="text-xs text-[#a3a3a3] mb-3">${s.desc[lang]}</p>
+      <div class="font-display text-2xl text-[#d4af37]">${s.price === 0 ? 'Free' : '$'+s.price}</div>
+    </div>
+  `).join('');
+  grid.querySelectorAll('.svc-card').forEach(c => {
+    c.addEventListener('click', () => {
+      const id = c.dataset.svc;
+      STATE.service = SERVICES.find(s => s.id === id);
+      renderServicesStep();
+      renderSummary();
+      validateStep();
+    });
+  });
+}
+
+// Step 2: stylists
+function renderStylistsStep() {
+  const lang = window.I18nManager?.current || 'en';
+  const grid = document.getElementById('stylists-grid');
+  // Filter stylists by specialty if service selected
+  const allowed = STATE.service && STATE.service.id
+    ? STYLISTS.filter(s => !STATE.service || s.specialties.includes(STATE.service.id))
+    : STYLISTS;
+  const stylists = allowed.length ? allowed : STYLISTS;
+
+  const cards = stylists.map(s => `
+    <div class="stylist-card card overflow-hidden ${STATE.stylist?.id===s.id?'selected':''}" data-stylist="${s.id}">
+      <div class="card-image aspect-[4/5]">
+        <img src="${s.image}" class="w-full h-full object-cover" alt="${s.name}">
+      </div>
+      <div class="p-5">
+        <h4 class="font-display text-2xl text-cream mb-1">${s.name}</h4>
+        <p class="text-[10px] tracking-[.3em] uppercase text-[#d4af37] mb-3">${s.role[lang]} · ${s.years}+ yrs</p>
+        <p class="text-xs text-[#a3a3a3] leading-relaxed">${s.bio[lang]}</p>
+      </div>
+    </div>
+  `).join('');
+
+  const anyCard = `
+    <div class="stylist-card card overflow-hidden ${STATE.stylist?.id==='any'?'selected':''} sm:col-span-2" data-stylist="any">
+      <div class="p-5 flex items-center gap-5">
+        <div class="w-16 h-16 rounded-full border border-[#d4af37] flex items-center justify-center text-[#d4af37]">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M12 2l9 4-9 4-9-4 9-4zM3 12l9 4 9-4M3 17l9 4 9-4"/></svg>
+        </div>
+        <div>
+          <h4 class="font-display text-xl text-cream mb-1" data-i18n="booking.any.stylist"></h4>
+          <p class="text-xs text-[#a3a3a3]" data-i18n="booking.any.stylist.desc"></p>
+        </div>
+      </div>
+    </div>`;
+
+  grid.innerHTML = anyCard + cards;
+  grid.querySelectorAll('.stylist-card').forEach(c => {
+    c.addEventListener('click', () => {
+      const id = c.dataset.stylist;
+      STATE.stylist = id === 'any'
+        ? { id:'any', name: lang === 'es' ? 'Primera disponible' : 'First available', role: { en:'Senior Team', es:'Equipo Senior'} }
+        : STYLISTS.find(s => s.id === id);
+      renderStylistsStep();
+      renderSummary();
+      validateStep();
+    });
+  });
+  if (window.I18nManager) window.I18nManager.apply();
+}
+
+// Step 3: calendar
+let calMonth = new Date();
+calMonth.setDate(1);
+function pad(n){ return String(n).padStart(2,'0'); }
+function fmtDate(d){ return `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}`; }
+function renderCalendar() {
+  const lang = window.I18nManager?.current || 'en';
+  const monthName = calMonth.toLocaleString(lang === 'es' ? 'es-ES' : 'en-US', { month:'long', year:'numeric' });
+  document.getElementById('cal-month').textContent = monthName;
+
+  const days = document.getElementById('cal-days');
+  days.innerHTML = '';
+
+  const firstDay = new Date(calMonth.getFullYear(), calMonth.getMonth(), 1).getDay();
+  const lastDate = new Date(calMonth.getFullYear(), calMonth.getMonth() + 1, 0).getDate();
+  const today = new Date(); today.setHours(0,0,0,0);
+
+  for (let i = 0; i < firstDay; i++) {
+    const cell = document.createElement('div');
+    days.appendChild(cell);
+  }
+  for (let d = 1; d <= lastDate; d++) {
+    const date = new Date(calMonth.getFullYear(), calMonth.getMonth(), d);
+    const cell = document.createElement('div');
+    cell.className = 'day-cell text-cream font-mono text-sm';
+    cell.textContent = d;
+    const past = date < today;
+    const closed = BUSY_PATTERN[date.getDay()] === 'closed';
+    if (past || closed) cell.classList.add('disabled');
+    if (date.toDateString() === new Date().toDateString()) cell.classList.add('today');
+    if (STATE.date === fmtDate(date)) cell.classList.add('selected');
+    if (!past && !closed) {
+      cell.addEventListener('click', () => {
+        STATE.date = fmtDate(date);
+        STATE.time = null;
+        renderCalendar();
+        renderTimes();
+        renderSummary();
+        validateStep();
+      });
+    }
+    days.appendChild(cell);
+  }
+}
+
+function renderTimes() {
+  const wrap = document.getElementById('time-slots');
+  if (!STATE.date) {
+    wrap.innerHTML = '<div class="text-[#7a7a7a] text-sm col-span-3 py-12 text-center">← Pick a date first</div>';
+    return;
+  }
+  const date = new Date(STATE.date + 'T00:00');
+  const busy = BUSY_PATTERN[date.getDay()] || [];
+  const closed = busy === 'closed';
+  if (closed) {
+    wrap.innerHTML = '<div class="text-[#7a7a7a] text-sm col-span-3 py-12 text-center">Closed this day</div>';
+    return;
+  }
+  wrap.innerHTML = TIME_SLOTS.map(t => {
+    const disabled = busy.includes(t);
+    const sel = STATE.time === t;
+    return `<div class="slot ${sel?'selected':''} ${disabled?'disabled':''}" data-time="${t}">${t}</div>`;
+  }).join('');
+  wrap.querySelectorAll('.slot:not(.disabled)').forEach(el => {
+    el.addEventListener('click', () => {
+      STATE.time = el.dataset.time;
+      renderTimes();
+      renderSummary();
+      validateStep();
+    });
+  });
+}
+
+// Summary panel
+function renderSummary() {
+  const wrap = document.getElementById('summary-content');
+  const lang = window.I18nManager?.current || 'en';
+  const empty = !STATE.service && !STATE.stylist && !STATE.date;
+  if (empty) {
+    wrap.innerHTML = `<div class="text-[#7a7a7a] text-center py-8 italic">${lang === 'es' ? 'Tus selecciones aparecerán aquí.' : 'Your selections will appear here.'}</div>`;
+    return;
+  }
+  let h = '';
+  if (STATE.service) {
+    h += `<div><div class="text-[10px] tracking-[.3em] uppercase text-[#7a7a7a] mb-1">${window.I18nManager.t('booking.step1')}</div><div class="text-cream font-medium">${STATE.service.name[lang]}</div><div class="text-xs text-[#a3a3a3]">${STATE.service.duration} min</div></div>`;
+  }
+  if (STATE.stylist) {
+    h += `<div><div class="text-[10px] tracking-[.3em] uppercase text-[#7a7a7a] mb-1">${window.I18nManager.t('booking.step2')}</div><div class="text-cream font-medium">${STATE.stylist.name}</div><div class="text-xs text-[#a3a3a3]">${STATE.stylist.role?.[lang] || ''}</div></div>`;
+  }
+  if (STATE.date) {
+    const d = new Date(STATE.date + 'T00:00');
+    const f = d.toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', { weekday:'long', month:'long', day:'numeric'});
+    h += `<div><div class="text-[10px] tracking-[.3em] uppercase text-[#7a7a7a] mb-1">${window.I18nManager.t('booking.step3')}</div><div class="text-cream font-medium">${f}${STATE.time ? ' · ' + STATE.time : ''}</div></div>`;
+  }
+  if (STATE.service) {
+    const total = STATE.service.price || 0;
+    const deposit = 20;
+    h += `<div class="pt-5 border-t border-[#d4af37]/15">
+            <div class="flex justify-between mb-2"><span class="text-[#a3a3a3] text-sm">${lang==='es'?'Subtotal':'Subtotal'}</span><span class="text-cream font-mono">$${total}</span></div>
+            <div class="flex justify-between mb-2"><span class="text-[#a3a3a3] text-sm">${lang==='es'?'Depósito hoy':'Deposit today'}</span><span class="text-[#d4af37] font-mono">$${deposit}</span></div>
+            <div class="flex justify-between text-base"><span class="text-cream">${lang==='es'?'Saldo en tienda':'Pay in salon'}</span><span class="font-display text-2xl text-[#d4af37]">$${total - deposit}</span></div>
+          </div>`;
+    h += `<p class="text-[11px] text-[#7a7a7a] leading-relaxed">${window.I18nManager.t('booking.deposit')}</p>`;
+  }
+  wrap.innerHTML = h;
+}
+
+// Step navigation
+function updateStepUI() {
+  for (let i=1;i<=5;i++){
+    const dot = document.querySelector(`[data-step-dot="${i}"]`);
+    const line = document.querySelector(`[data-step-line="${i}"]`);
+    dot.classList.remove('active','done');
+    if (line) line.classList.remove('done');
+    if (i < STATE.step) { dot.classList.add('done'); if (line) line.classList.add('done'); dot.textContent='✓'; }
+    else if (i === STATE.step){ dot.classList.add('active'); dot.textContent = i; }
+    else { dot.textContent = i; }
+  }
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  const target = document.getElementById('step-' + STATE.step);
+  if (target) target.classList.add('active');
+
+  // back
+  const back = document.getElementById('btn-back');
+  back.disabled = STATE.step === 1;
+  back.style.opacity = STATE.step === 1 ? .4 : 1;
+  back.style.cursor = STATE.step === 1 ? 'not-allowed' : 'pointer';
+
+  // next button label
+  const next = document.getElementById('btn-next');
+  next.dataset.i18n = STATE.step === 5 ? 'booking.pay' : 'booking.next';
+  if (window.I18nManager) window.I18nManager.apply();
+  validateStep();
+}
+
+function validateStep() {
+  const next = document.getElementById('btn-next');
+  let ok = false;
+  if (STATE.step === 1) ok = !!STATE.service;
+  if (STATE.step === 2) ok = !!STATE.stylist;
+  if (STATE.step === 3) ok = !!STATE.date && !!STATE.time;
+  if (STATE.step === 4) ok = ['f-first','f-last','f-phone','f-email'].every(id => document.getElementById(id).value.trim().length > 1);
+  if (STATE.step === 5) ok = ['f-card','f-exp','f-cvc','f-zip','f-cardname'].every(id => document.getElementById(id).value.trim().length > 1);
+  next.disabled = !ok;
+  next.style.opacity = ok ? 1 : .4;
+  next.style.cursor = ok ? 'pointer' : 'not-allowed';
+}
+
+document.addEventListener('input', validateStep);
+
+document.getElementById('btn-back').addEventListener('click', () => {
+  if (STATE.step > 1) { STATE.step--; updateStepUI(); window.scrollTo({top:0,behavior:'smooth'}); }
+});
+
+document.getElementById('btn-next').addEventListener('click', async () => {
+  if (STATE.step === 4) {
+    STATE.customer = {
+      first: document.getElementById('f-first').value,
+      last: document.getElementById('f-last').value,
+      phone: document.getElementById('f-phone').value,
+      email: document.getElementById('f-email').value,
+      notes: document.getElementById('f-notes').value
+    };
+  }
+  if (STATE.step === 5) {
+    STATE.payment = {
+      card: '**** ' + document.getElementById('f-card').value.slice(-4),
+      exp: document.getElementById('f-exp').value
+    };
+    return await processPayment();
+  }
+  STATE.step++;
+  if (STATE.step === 2) renderStylistsStep();
+  if (STATE.step === 3) { renderCalendar(); renderTimes(); }
+  updateStepUI();
+  window.scrollTo({top:0,behavior:'smooth'});
+});
+
+// Calendar nav
+document.getElementById('cal-prev').addEventListener('click', () => {
+  calMonth.setMonth(calMonth.getMonth() - 1);
+  renderCalendar();
+});
+document.getElementById('cal-next').addEventListener('click', () => {
+  calMonth.setMonth(calMonth.getMonth() + 1);
+  renderCalendar();
+});
+
+// Service category tabs in step 1
+document.querySelectorAll('#step-1 .cat-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    activeCat = tab.dataset.cat;
+    document.querySelectorAll('#step-1 .cat-tab').forEach(t => t.classList.remove('active'));
+    tab.classList.add('active');
+    renderServicesStep();
+  });
+});
+
+// Card formatting
+const cardInp = document.getElementById('f-card');
+cardInp?.addEventListener('input', e => {
+  let v = e.target.value.replace(/\s/g,'').replace(/\D/g,'');
+  v = v.match(/.{1,4}/g)?.join(' ') || '';
+  e.target.value = v;
+  const brand = document.getElementById('card-brand');
+  if (v.startsWith('4')) brand.textContent = 'VISA';
+  else if (/^(5[1-5]|2[2-7])/.test(v)) brand.textContent = 'MC';
+  else if (/^3[47]/.test(v)) brand.textContent = 'AMEX';
+  else brand.textContent = '';
+});
+const expInp = document.getElementById('f-exp');
+expInp?.addEventListener('input', e => {
+  let v = e.target.value.replace(/\D/g,'').slice(0,4);
+  if (v.length >= 3) v = v.slice(0,2) + ' / ' + v.slice(2);
+  e.target.value = v;
+});
+document.getElementById('f-cvc')?.addEventListener('input', e => e.target.value = e.target.value.replace(/\D/g,''));
+document.getElementById('f-zip')?.addEventListener('input', e => e.target.value = e.target.value.replace(/\D/g,''));
+
+// Apple/Google pay buttons trigger same flow
+document.getElementById('pay-apple')?.addEventListener('click', () => {
+  STATE.payment = { method:'apple' };
+  processPayment();
+});
+document.getElementById('pay-google')?.addEventListener('click', () => {
+  STATE.payment = { method:'google' };
+  processPayment();
+});
+
+async function processPayment() {
+  // Show overlay
+  const ov = document.createElement('div');
+  ov.style.cssText = 'position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(20px)';
+  ov.innerHTML = `
+    <div class="font-display text-3xl text-[#d4af37] mb-6">${window.I18nManager.t('pay.processing')}</div>
+    <div class="page-loader-bar"></div>
+  `;
+  document.body.appendChild(ov);
+  await new Promise(r => setTimeout(r, 2200));
+  ov.remove();
+
+  // Generate ref
+  STATE.ref = 'BL-' + Date.now().toString(36).toUpperCase().slice(-6);
+  saveBooking();
+  showSuccess();
+}
+
+function saveBooking() {
+  const all = JSON.parse(localStorage.getItem('beautyloft.bookings') || '[]');
+  all.push({ ...STATE, createdAt: new Date().toISOString() });
+  localStorage.setItem('beautyloft.bookings', JSON.stringify(all));
+}
+
+function showSuccess() {
+  document.querySelectorAll('.step-panel').forEach(p => p.classList.remove('active'));
+  document.getElementById('step-success').classList.add('active');
+  document.getElementById('nav-controls').style.display = 'none';
+  document.getElementById('success-ref').textContent = STATE.ref;
+  // mark all step dots done
+  for (let i=1;i<=5;i++){
+    const dot = document.querySelector(`[data-step-dot="${i}"]`);
+    const line = document.querySelector(`[data-step-line="${i}"]`);
+    dot.classList.add('done'); dot.textContent='✓';
+    if (line) line.classList.add('done');
+  }
+  // success summary
+  const lang = window.I18nManager?.current || 'en';
+  const d = new Date(STATE.date + 'T00:00');
+  const f = d.toLocaleDateString(lang === 'es' ? 'es-ES' : 'en-US', { weekday:'long', month:'long', day:'numeric'});
+  document.getElementById('success-summary').innerHTML = `
+    <div class="card p-6 text-left">
+      <div class="space-y-3 text-sm">
+        <div class="flex justify-between"><span class="text-[#7a7a7a]">${window.I18nManager.t('booking.step1')}</span><span class="text-cream">${STATE.service.name[lang]}</span></div>
+        <div class="flex justify-between"><span class="text-[#7a7a7a]">${window.I18nManager.t('booking.step2')}</span><span class="text-cream">${STATE.stylist.name}</span></div>
+        <div class="flex justify-between"><span class="text-[#7a7a7a]">${window.I18nManager.t('booking.step3')}</span><span class="text-cream">${f} · ${STATE.time}</span></div>
+        <div class="flex justify-between pt-3 border-t border-[#d4af37]/15"><span class="text-[#7a7a7a]">${lang==='es'?'Depósito':'Deposit'}</span><span class="text-[#d4af37] font-mono">$20</span></div>
+      </div>
+    </div>
+  `;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// Calendar download (simple .ics)
+function downloadIcs() {
+  if (!STATE.date || !STATE.time) return;
+  const start = new Date(STATE.date + 'T' + STATE.time + ':00');
+  const end = new Date(start.getTime() + STATE.service.duration * 60000);
+  const fmt = d => d.toISOString().replace(/[-:]|\.\d{3}/g,'');
+  const ics = `BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//The Beauty Loft//EN
+BEGIN:VEVENT
+UID:${STATE.ref}@beautyloftny.com
+DTSTAMP:${fmt(new Date())}
+DTSTART:${fmt(start)}
+DTEND:${fmt(end)}
+SUMMARY:The Beauty Loft - ${STATE.service.name.en}
+LOCATION:240 E 28th Street\\, New York\\, NY 10016
+DESCRIPTION:Booking ${STATE.ref}\\n${STATE.service.name.en}\\nStylist: ${STATE.stylist.name}
+END:VEVENT
+END:VCALENDAR`;
+  const blob = new Blob([ics], { type:'text/calendar' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `beauty-loft-${STATE.ref}.ics`;
+  a.click();
+  URL.revokeObjectURL(url);
+  window.toast(window.I18nManager.current === 'es' ? '✓ Archivo descargado' : '✓ Calendar file downloaded');
+}
+window.downloadIcs = downloadIcs;
+
+// Init
+document.addEventListener('DOMContentLoaded', () => {
+  renderServicesStep();
+  renderSummary();
+  validateStep();
+  if (initialService && STATE.service) {
+    // Auto-advance to step 2
+    STATE.step = 2;
+    renderStylistsStep();
+    updateStepUI();
+  }
+});
+document.addEventListener('langchange', () => {
+  renderServicesStep();
+  if (STATE.step >= 2) renderStylistsStep();
+  if (STATE.step >= 3) { renderCalendar(); renderTimes(); }
+  renderSummary();
+});
+
+// Style active cat tab
+const s = document.createElement('style');
+s.textContent = `.cat-tab.active{background:#d4af37;color:#000;border-color:#d4af37;}`;
+document.head.appendChild(s);
+</script>
+</body>
+</html>
