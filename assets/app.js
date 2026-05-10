@@ -77,6 +77,18 @@
     });
   }
 
+  // ---- Image fallback (Unsplash IDs go stale; show gold gradient instead) ----
+  function bindImageFallback() {
+    const fallback = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 500' preserveAspectRatio='xMidYMid slice'><defs><linearGradient id='g' x1='0%25' y1='0%25' x2='100%25' y2='100%25'><stop offset='0%25' stop-color='%23a88a2e'/><stop offset='50%25' stop-color='%23d4af37'/><stop offset='100%25' stop-color='%23f4e4ba'/></linearGradient><pattern id='p' patternUnits='userSpaceOnUse' width='80' height='80'><path d='M 0 40 L 40 0 M 40 80 L 80 40' stroke='%23a88a2e' stroke-width='.5' opacity='.3'/></pattern></defs><rect width='400' height='500' fill='url(%23g)'/><rect width='400' height='500' fill='url(%23p)'/><text x='200' y='240' fill='%230a0a0a' text-anchor='middle' font-family='Cormorant Garamond, serif' font-size='38' font-style='italic'>The Beauty Loft</text><text x='200' y='278' fill='%230a0a0a' text-anchor='middle' font-family='Inter, sans-serif' font-size='11' letter-spacing='4'>KIPS BAY  ·  NYC</text></svg>";
+    document.addEventListener('error', e => {
+      const t = e.target;
+      if (t && t.tagName === 'IMG' && !t.dataset.fallback && !t.src.startsWith('data:')) {
+        t.dataset.fallback = '1';
+        t.src = fallback;
+      }
+    }, true);
+  }
+
   // ---- Logo chroma-key (white background → transparent) ----
   function chromaKeyImg(img) {
     if (img.dataset.processed) return;
@@ -185,6 +197,7 @@
   // ---- Init ----
   document.addEventListener('DOMContentLoaded', () => {
     if (window.I18nManager) window.I18nManager.init();
+    bindImageFallback();
     bindReveal();
     bindNavbar();
     bindScrollProgress();
