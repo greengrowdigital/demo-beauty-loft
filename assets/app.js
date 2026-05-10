@@ -77,32 +77,35 @@
     });
   }
 
-  // ---- Custom cursor (desktop only) ----
-  function bindCursor() {
-    if (window.matchMedia('(hover:none)').matches) return;
-    const cursor = document.createElement('div');
-    cursor.className = 'cursor';
-    document.body.appendChild(cursor);
-    const dot = document.createElement('div');
-    dot.className = 'cursor-dot';
-    document.body.appendChild(dot);
-
-    let x = 0, y = 0, tx = 0, ty = 0;
-    document.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; dot.style.left = tx + 'px'; dot.style.top = ty + 'px'; });
-    function frame() {
-      x += (tx - x) * 0.16; y += (ty - y) * 0.16;
-      cursor.style.left = x + 'px'; cursor.style.top = y + 'px';
-      requestAnimationFrame(frame);
-    }
-    frame();
-
-    document.addEventListener('mouseover', e => {
-      const t = e.target.closest('a, button, .card, .service-orb, .slot, [data-cursor-hover]');
-      if (t) cursor.classList.add('hover');
-    });
-    document.addEventListener('mouseout', e => {
-      const t = e.target.closest('a, button, .card, .service-orb, .slot, [data-cursor-hover]');
-      if (t) cursor.classList.remove('hover');
+  // ---- Logo chroma-key (white background → transparent) ----
+  function chromaKeyImg(img) {
+    if (img.dataset.processed) return;
+    try {
+      const c = document.createElement('canvas');
+      c.width = img.naturalWidth; c.height = img.naturalHeight;
+      if (!c.width || !c.height) return;
+      const ctx = c.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      const data = ctx.getImageData(0, 0, c.width, c.height);
+      const px = data.data;
+      for (let i = 0; i < px.length; i += 4) {
+        const r = px[i], g = px[i+1], b = px[i+2];
+        const lum = (r + g + b) / 3;
+        if (lum > 235) {
+          px[i+3] = 0;
+        } else if (lum > 200) {
+          px[i+3] = Math.round(px[i+3] * (1 - (lum - 200) / 35));
+        }
+      }
+      ctx.putImageData(data, 0, 0);
+      img.src = c.toDataURL('image/png');
+      img.dataset.processed = '1';
+    } catch (e) { /* CORS or other — silently keep original */ }
+  }
+  function bindChromaKey() {
+    document.querySelectorAll('img.brand-logo, img.page-loader-logo-img').forEach(img => {
+      if (img.complete && img.naturalWidth) chromaKeyImg(img);
+      else img.addEventListener('load', () => chromaKeyImg(img), { once:true });
     });
   }
 
@@ -187,7 +190,7 @@
     bindScrollProgress();
     bindMobileMenu();
     bindCardSpotlight();
-    bindCursor();
+    bindChromaKey();
     bindNewsletters();
     bindSmoothScroll();
     bindCountUp();
