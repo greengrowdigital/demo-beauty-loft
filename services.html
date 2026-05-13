@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="assets/img/logo.png?v=2">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&family=Italianno&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/main.css?v=6" />
+<link rel="stylesheet" href="assets/main.css?v=7" />
 </head>
 <body>
 
@@ -129,9 +129,9 @@
   </div>
 </footer>
 
-<script src="assets/i18n.js?v=6"></script>
-<script src="assets/data.js?v=6"></script>
-<script src="assets/app.js?v=6"></script>
+<script src="assets/i18n.js?v=7"></script>
+<script src="assets/data.js?v=7"></script>
+<script src="assets/app.js?v=7"></script>
 <script>
 const CAT_LABELS = {
   hair: 'services.cat.hair',
@@ -172,9 +172,11 @@ function renderServices() {
           </div>
           <div class="col-span-4 md:col-span-2 font-mono text-sm text-[#7a7a7a]">${s.duration} ${window.I18nManager.t('common.minutes')}</div>
           <div class="col-span-4 md:col-span-2">
-            ${s.price === 0
-              ? `<span class="font-display text-2xl text-[#d4af37]">Free</span>`
-              : `<div class="font-display text-2xl text-[#d4af37]">$${s.price}</div>`}
+            ${s.priceLabel
+              ? `<span class="font-display text-2xl text-[#d4af37]">${s.priceLabel}</span>`
+              : s.price === 0
+                ? `<span class="font-display text-2xl text-[#d4af37]">Free</span>`
+                : `<div class="font-display text-2xl text-[#d4af37]">$${s.price}</div>`}
           </div>
           <div class="col-span-4 md:col-span-2 text-right">
             <a href="booking.html?service=${s.id}" class="btn btn-outline" style="padding:.6rem 1.2rem;font-size:.6rem" data-i18n="services.book"></a>
