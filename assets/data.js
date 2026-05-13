@@ -129,49 +129,8 @@ const SERVICES = [
     desc:{en:"Safe removal of any extension method.", es:"Remoción segura de cualquier tipo de extensión."} },
 ];
 
-const PACKAGES = [
-  {
-    id:'signature-reset',
-    titleKey:'packages.signature.title',
-    descKey:'packages.signature.desc',
-    price:179,
-    duration:130,
-    image:'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&auto=format&fit=crop',
-    includes:[
-      {en:'Scalp Detox treatment', es:'Detox del cuero cabelludo'},
-      {en:'Blowout Style', es:'Brushing con peinado'},
-      {en:'Brow Shaping', es:'Diseño de cejas'},
-    ]
-  },
-  {
-    id:'bridal-trial',
-    titleKey:'packages.bridal.title',
-    descKey:'packages.bridal.desc',
-    price:340,
-    duration:225,
-    image:'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=900&auto=format&fit=crop',
-    includes:[
-      {en:'Special Occasion Styling', es:'Peinado ocasión especial'},
-      {en:'Lash Lift', es:'Lifting de pestañas'},
-      {en:'Brow Lamination', es:'Laminado de cejas'},
-      {en:'Deep Cleansing Facial', es:'Facial limpieza profunda'},
-    ]
-  },
-  {
-    id:'deep-repair',
-    titleKey:'packages.deep.title',
-    descKey:'packages.deep.desc',
-    price:240,
-    duration:195,
-    image:'https://images.unsplash.com/photo-1560869713-7d0a29430803?w=900&auto=format&fit=crop',
-    includes:[
-      {en:'K18 Treatment', es:'Tratamiento K18'},
-      {en:'Olaplex Treatment', es:'Tratamiento Olaplex'},
-      {en:'Haircut', es:'Corte de cabello'},
-      {en:'Glaze', es:'Glaze de brillo'},
-    ]
-  },
-];
+// Packages removed — not in client's service list.
+const PACKAGES = [];
 
 const STYLISTS = [
   {
