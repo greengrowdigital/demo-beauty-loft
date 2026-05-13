@@ -1,61 +1,132 @@
 /* ============================================================
-   THE BEAUTY LOFT — Data
-   Services, packages, stylists, time slots.
+   THE BEAUTY LOFT — Real menu
+   Source: client-provided service list (2026).
 ============================================================ */
 
 const SERVICES = [
-  // ============ HAIR ============
-  { id:'cut-women',    cat:'hair',       name:{en:"Women's Haircut", es:"Corte mujer"},                price:85,  duration:60,  desc:{en:"Consultation, custom cut, blow-dry finish.", es:"Consulta, corte personalizado, brushing final."} },
-  { id:'cut-men',      cat:'hair',       name:{en:"Men's Haircut", es:"Corte hombre"},                price:55,  duration:45,  desc:{en:"Precision cut with hot towel finish.", es:"Corte de precisión con toalla caliente."} },
-  { id:'cut-kids',     cat:'hair',       name:{en:"Kids Cut (under 12)", es:"Corte niñ@s (–12)"},     price:35,  duration:30,  desc:{en:"Gentle, kid-friendly cut.", es:"Corte amable, ambiente para niños."} },
-  { id:'bang-trim',    cat:'hair',       name:{en:"Bang / Fringe Trim", es:"Recorte de flequillo"},  price:25,  duration:15,  desc:{en:"Free between full cuts within 4 weeks.", es:"Gratis entre cortes completos dentro de 4 semanas."} },
+  // ============ BROWS (cat: lashes & brows) ============
+  { id:'brow-shape', cat:'lashes', name:{en:"Brow Shaping", es:"Diseño de cejas"}, price:8, duration:15,
+    desc:{en:"Customized brow shaping using threading or waxing for clean, defined brows.", es:"Diseño personalizado con hilo o cera para cejas limpias y definidas."} },
+  { id:'brow-tint', cat:'lashes', name:{en:"Brow Tinting", es:"Tinte de cejas"}, price:20, duration:20,
+    desc:{en:"Semi-permanent color for fuller, more polished brows.", es:"Color semi-permanente para cejas más completas y pulidas."} },
+  { id:'brow-lam', cat:'lashes', name:{en:"Brow Lamination", es:"Laminado de cejas"}, price:70, duration:45,
+    desc:{en:"Smoothing treatment that lifts and sets brow hairs for a fuller, fluffy look.", es:"Tratamiento que levanta y fija las cejas para un look completo y voluminoso."} },
 
-  // ============ COLOR ============
-  { id:'gloss',        cat:'color',      name:{en:"Gloss / Toner", es:"Gloss / Tono"},                price:75,  duration:45,  desc:{en:"Refresh dimension and shine.", es:"Refresca dimensión y brillo."} },
-  { id:'root-touch',   cat:'color',      name:{en:"Root Touch-up", es:"Retoque de raíz"},             price:120, duration:90,  desc:{en:"Single-process color at the roots.", es:"Color de raíz, un solo proceso."} },
-  { id:'allover',      cat:'color',      name:{en:"All-over Color", es:"Color completo"},             price:160, duration:120, desc:{en:"Single-process from roots to ends.", es:"Color completo de raíz a puntas."} },
-  { id:'partial',      cat:'color',      name:{en:"Partial Highlights", es:"Mechas parciales"},       price:200, duration:150, desc:{en:"Top and crown highlights, framing.", es:"Mechas en la parte superior y enmarcado."} },
-  { id:'full',         cat:'color',      name:{en:"Full Highlights", es:"Mechas completas"},          price:280, duration:180, desc:{en:"All-over dimension and lift.", es:"Dimensión y aclarado completo."} },
-  { id:'balayage',     cat:'color',      name:{en:"Balayage", es:"Balayage"},                         price:320, duration:210, desc:{en:"Hand-painted, natural lift.", es:"Pintado a mano, aclarado natural."} },
-  { id:'lighten',      cat:'color',      name:{en:"Full Lightening", es:"Aclarado completo"},          price:380, duration:240, desc:{en:"Major lift with bond protection.", es:"Aclarado profundo con protección de enlaces."} },
-  { id:'color-correct',cat:'color',      name:{en:"Color Correction", es:"Corrección de color"},      price:450, duration:300, desc:{en:"Quote based on consultation.", es:"Cotización tras consulta."} },
+  // ============ LASHES ============
+  { id:'lash-lift', cat:'lashes', name:{en:"Lash Lift", es:"Lifting de pestañas"}, price:100, duration:60,
+    desc:{en:"Lifts and curls your natural lashes for a longer, fuller look — no extensions.", es:"Levanta y riza tus pestañas naturales para un look más largo, sin extensiones."} },
+  { id:'lash-flare', cat:'lashes', name:{en:"Flare Cluster Lashes", es:"Pestañas en clúster"}, price:55, duration:45,
+    desc:{en:"Temporary lash clusters for added volume — perfect for events.", es:"Clusters temporales para más volumen — ideal para eventos."} },
+  { id:'lash-mink', cat:'lashes', name:{en:"Mink Individual Lashes", es:"Pestañas individuales de mink"}, price:140, duration:90,
+    desc:{en:"Lightweight individual lashes for natural, longer-lasting enhancement.", es:"Pestañas individuales ligeras para un realce natural y duradero."} },
 
-  // ============ LASHES & BROWS ============
-  { id:'lash-lift',    cat:'lashes',     name:{en:"Lash Lift + Tint", es:"Lifting + tinte de pestañas"}, price:110, duration:60, desc:{en:"6–8 weeks of natural curl.", es:"6–8 semanas de rizo natural."} },
-  { id:'classic-set',  cat:'lashes',     name:{en:"Classic Lash Set", es:"Set de pestañas clásicas"},  price:180, duration:120, desc:{en:"One extension per natural lash.", es:"Una extensión por pestaña natural."} },
-  { id:'volume-set',   cat:'lashes',     name:{en:"Volume Lash Set", es:"Set de pestañas volumen"},    price:230, duration:150, desc:{en:"Hand-fanned for soft drama.", es:"Abanicos hechos a mano para drama suave."} },
-  { id:'lash-fill',    cat:'lashes',     name:{en:"Lash Fill", es:"Mantenimiento pestañas"},          price:90,  duration:75,  desc:{en:"2–3 week refill.", es:"Recarga de 2–3 semanas."} },
-  { id:'brow-shape',   cat:'lashes',     name:{en:"Brow Shape & Wax", es:"Diseño y depilación cejas"},price:35,  duration:30,  desc:{en:"Custom shape, threading or wax.", es:"Diseño personalizado, hilo o cera."} },
-  { id:'brow-lam',     cat:'lashes',     name:{en:"Brow Lamination", es:"Laminado de cejas"},         price:75,  duration:45,  desc:{en:"Set the look for 6+ weeks.", es:"Fija el look por más de 6 semanas."} },
-  { id:'brow-tint',    cat:'lashes',     name:{en:"Brow Tint", es:"Tinte de cejas"},                  price:30,  duration:20,  desc:{en:"Add depth and definition.", es:"Profundidad y definición."} },
+  // ============ FACE WAXING ============
+  { id:'wax-full-face', cat:'waxing', name:{en:"Full Face Wax", es:"Cera rostro completo"}, price:40, duration:15,
+    desc:{en:"Removes facial hair using threading or waxing.", es:"Remueve el vello facial con hilo o cera."} },
+  { id:'wax-upper-lip', cat:'waxing', name:{en:"Upper Lip", es:"Bigote"}, price:6, duration:5,
+    desc:{en:"Quick removal of upper lip hair.", es:"Depilación rápida del bigote."} },
+  { id:'wax-lower-lip', cat:'waxing', name:{en:"Lower Lip", es:"Labio inferior"}, price:6, duration:5,
+    desc:{en:"Targets fine hair on the lower lip.", es:"Remueve el vello fino del labio inferior."} },
+  { id:'wax-forehead', cat:'waxing', name:{en:"Forehead", es:"Frente"}, price:10, duration:5,
+    desc:{en:"Cleans up the forehead area for a sharper hairline.", es:"Limpia la línea de la frente."} },
+  { id:'wax-sideburns', cat:'waxing', name:{en:"Sideburns", es:"Patillas"}, price:12, duration:5,
+    desc:{en:"Shapes and cleans sideburns.", es:"Diseña y limpia las patillas."} },
+  { id:'wax-chin', cat:'waxing', name:{en:"Chin", es:"Mentón"}, price:8, duration:5,
+    desc:{en:"Removes unwanted chin hair.", es:"Remueve el vello del mentón."} },
+  { id:'wax-neck', cat:'waxing', name:{en:"Neck", es:"Cuello"}, price:12, duration:5,
+    desc:{en:"Cleans up hair along the neck.", es:"Limpia el vello del cuello."} },
+  { id:'wax-nose', cat:'waxing', name:{en:"Nose Wax", es:"Cera nasal"}, price:12, duration:5,
+    desc:{en:"Quick and effective nose hair removal.", es:"Remoción rápida y efectiva del vello nasal."} },
 
-  // ============ SKIN & FACIALS ============
-  { id:'signature-facial', cat:'skin',   name:{en:"Signature Facial", es:"Facial signature"},          price:140, duration:60, desc:{en:"Cleanse, exfoliate, mask, massage.", es:"Limpieza, exfoliación, mascarilla, masaje."} },
-  { id:'glow-facial',  cat:'skin',       name:{en:"Glow Facial", es:"Facial luminoso"},              price:180, duration:75,  desc:{en:"Brightening enzymes + LED.", es:"Enzimas iluminadoras + LED."} },
-  { id:'deep-clean',   cat:'skin',       name:{en:"Deep Cleanse Facial", es:"Facial limpieza profunda"}, price:160, duration:75, desc:{en:"For congested, breakout-prone skin.", es:"Para piel con tendencia a brotes."} },
-  { id:'hydrafacial',  cat:'skin',       name:{en:"HydraFacial", es:"HydraFacial"},                  price:220, duration:60,  desc:{en:"Cleanse, extract, hydrate.", es:"Limpia, extrae, hidrata."} },
+  // ============ FACIALS (cat: skin) ============
+  { id:'fac-express', cat:'skin', name:{en:"Express Cleansing Facial", es:"Facial limpieza express"}, price:35, duration:30,
+    desc:{en:"Quick refresh: cleanse, exfoliate, mask.", es:"Refresco rápido: limpieza, exfoliación y mascarilla."} },
+  { id:'fac-deep', cat:'skin', name:{en:"Deep Cleansing Facial", es:"Facial limpieza profunda"}, price:75, duration:60,
+    desc:{en:"Customized facial: deep cleansing, exfoliation and treatment mask.", es:"Facial personalizado: limpieza profunda, exfoliación y mascarilla."} },
+  { id:'fac-derma', cat:'skin', name:{en:"Dermaplaning Add-On", es:"Dermaplaning (Add-on)"}, price:50, duration:15,
+    desc:{en:"Gently exfoliates and removes peach fuzz.", es:"Exfolia suavemente y remueve el vello fino."} },
 
-  // ============ WAXING ============
-  { id:'wax-brow',     cat:'waxing',     name:{en:"Brow Wax", es:"Depilación cejas"},                 price:25,  duration:15, desc:{en:"Clean shape and definition.", es:"Forma limpia y definición."} },
-  { id:'wax-lip',      cat:'waxing',     name:{en:"Lip Wax", es:"Depilación bigote"},                price:15,  duration:10, desc:{en:"Quick and gentle.", es:"Rápido y suave."} },
-  { id:'wax-face',     cat:'waxing',     name:{en:"Full Face Wax", es:"Depilación rostro completo"},  price:55,  duration:30, desc:{en:"All facial areas.", es:"Todas las áreas faciales."} },
-  { id:'wax-underarm', cat:'waxing',     name:{en:"Underarm Wax", es:"Depilación axilas"},            price:35,  duration:20, desc:{en:"Smooth and clean.", es:"Suave y limpio."} },
-  { id:'wax-bikini',   cat:'waxing',     name:{en:"Bikini Wax", es:"Bikini"},                         price:55,  duration:30, desc:{en:"Standard bikini line.", es:"Línea de bikini estándar."} },
-  { id:'wax-brazilian',cat:'waxing',     name:{en:"Brazilian Wax", es:"Brasileña"},                   price:75,  duration:40, desc:{en:"Full Brazilian.", es:"Brasileña completa."} },
-  { id:'wax-leg',      cat:'waxing',     name:{en:"Full Leg Wax", es:"Pierna completa"},              price:90,  duration:45, desc:{en:"Smooth from thigh to ankle.", es:"Suave de muslo a tobillo."} },
+  // ============ BODY WAXING ============
+  { id:'wax-full-body', cat:'waxing', name:{en:"Full Body Wax", es:"Cera cuerpo completo"}, price:325, duration:90,
+    desc:{en:"Removes unwanted hair from neck to toe.", es:"Remueve el vello del cuello a los pies."} },
+  { id:'wax-underarm', cat:'waxing', name:{en:"Underarm", es:"Axilas"}, price:20, duration:10,
+    desc:{en:"Removes hair from the entire underarm area.", es:"Depilación completa de las axilas."} },
+  { id:'wax-back', cat:'waxing', name:{en:"Back", es:"Espalda"}, price:50, duration:10,
+    desc:{en:"Removes hair from the full back.", es:"Depilación de la espalda completa."} },
+  { id:'wax-chest', cat:'waxing', name:{en:"Chest", es:"Pecho"}, price:50, duration:20,
+    desc:{en:"Removes hair from the chest area.", es:"Depilación del pecho."} },
 
-  // ============ TREATMENTS ============
-  { id:'scalp-detox',  cat:'treatments', name:{en:"Scalp Detox", es:"Detox capilar"},                 price:60,  duration:30, desc:{en:"Clarifying scrub + steam treatment.", es:"Exfoliante clarificador + vapor."} },
-  { id:'k18',          cat:'treatments', name:{en:"K18 Bond Repair", es:"Reparación K18"},            price:75,  duration:30, desc:{en:"Add to any service for instant repair.", es:"Agrega a cualquier servicio para reparación inmediata."} },
-  { id:'olaplex',      cat:'treatments', name:{en:"Olaplex Stand-alone", es:"Olaplex independiente"}, price:60,  duration:45, desc:{en:"Steps 1+2 + take-home #3.", es:"Pasos 1+2 + #3 para llevar."} },
-  { id:'keratin',      cat:'treatments', name:{en:"Keratin Smoothing", es:"Alisado de keratina"},     price:320, duration:180, desc:{en:"3+ months of frizz-free hair.", es:"Más de 3 meses sin frizz."} },
-  { id:'glaze',        cat:'treatments', name:{en:"Shine Glaze", es:"Glaze de brillo"},               price:65,  duration:30, desc:{en:"Mirror shine, no commitment.", es:"Brillo espejo, sin compromiso."} },
+  // ============ BIKINI & BRAZILIAN ============
+  { id:'wax-brazilian-full', cat:'waxing', name:{en:"Brazilian Front & Back", es:"Brasileña frente y atrás"}, price:65, duration:20,
+    desc:{en:"Complete hair removal from front and back.", es:"Depilación completa de frente y atrás."} },
+  { id:'wax-brazilian', cat:'waxing', name:{en:"Brazilian Front", es:"Brasileña frente"}, price:55, duration:20,
+    desc:{en:"Removes all hair from the front bikini area.", es:"Depilación completa de la zona frontal del bikini."} },
+  { id:'wax-bikini', cat:'waxing', name:{en:"Bikini Line", es:"Línea del bikini"}, price:35, duration:15,
+    desc:{en:"Cleans up the bikini line for a neat, natural shape.", es:"Limpia la línea del bikini para un acabado natural."} },
+
+  // ============ HAIR COLOR ============
+  { id:'col-full-light', cat:'color', name:{en:"Full Lightening", es:"Aclarado completo"}, price:250, duration:240,
+    desc:{en:"Customized blonding with highlights, babylights and balayage.", es:"Servicio personalizado con mechas, babylights y balayage."} },
+  { id:'col-face-frame', cat:'color', name:{en:"Face Framing Foils", es:"Foils enmarcando rostro"}, price:190, duration:90,
+    desc:{en:"Brightens face-framing area to refresh balayage.", es:"Aclara la zona del rostro para refrescar el balayage."} },
+  { id:'col-no-bleach', cat:'color', name:{en:"No-Bleach Highlights", es:"Mechas sin decoloración"}, price:225, duration:120,
+    desc:{en:"Gentle high-lift color for soft, natural dimension on virgin hair.", es:"Aclarado suave en cabello virgen, sin bleach."} },
+  { id:'col-root', cat:'color', name:{en:"Single Process — Roots", es:"Proceso único — raíz"}, price:75, duration:90,
+    desc:{en:"Seamless gray coverage or color refresh on the new growth.", es:"Retoque de raíz para cubrir canas o refrescar color."} },
+  { id:'col-full', cat:'color', name:{en:"Single Process — Roots to Ends", es:"Proceso único — completo"}, price:120, duration:120,
+    desc:{en:"Full color from roots to ends for a rich, even tone.", es:"Color completo de raíz a puntas para un tono uniforme."} },
+  { id:'col-glaze', cat:'color', name:{en:"Glaze", es:"Glaze de brillo"}, price:65, duration:60,
+    desc:{en:"Enhances shine, refreshes color, neutralizes tones.", es:"Realza el brillo, refresca el color y neutraliza tonos."} },
+  { id:'col-black-rem', cat:'color', name:{en:"Black Removal", es:"Decapado de negro"}, price:400, duration:240,
+    desc:{en:"Corrective service to remove dark dye buildup.", es:"Servicio correctivo para remover acumulación de tinte oscuro."} },
+
+  // ============ HAIRCUT ============
+  { id:'haircut', cat:'hair', name:{en:"Haircut", es:"Corte de cabello"}, price:85, duration:75,
+    desc:{en:"Customized cut, shampoo and blowout finish.", es:"Corte personalizado con shampoo y brushing."} },
+
+  // ============ HAIR STYLING ============
+  { id:'sty-blowout', cat:'hair', name:{en:"Blowout", es:"Brushing"}, price:50, duration:30,
+    desc:{en:"Smooth blowout finish.", es:"Acabado suave de brushing."} },
+  { id:'sty-blowout-style', cat:'hair', name:{en:"Blowout Style", es:"Brushing con peinado"}, price:75, duration:45,
+    desc:{en:"Wash, blow-dry and styling for a polished finish.", es:"Lavado, brushing y peinado para acabado pulido."} },
+  { id:'sty-formal', cat:'hair', name:{en:"Formal Hair Styling", es:"Peinado formal"}, price:125, duration:50,
+    desc:{en:"Updos, curls or half-up styles for events.", es:"Recogidos, rizos o semi-recogidos para eventos."} },
+  { id:'sty-special', cat:'hair', name:{en:"Special Occasion Styling", es:"Peinado ocasión especial"}, price:150, duration:75,
+    desc:{en:"Glam styling: waves, updos or looks with extensions.", es:"Peinado glam con ondas, recogidos o looks con extensiones."} },
+  { id:'add-bang', cat:'hair', name:{en:"Bang Trim", es:"Recorte de flequillo"}, price:15, duration:10,
+    desc:{en:"Quick trim to maintain your fringe.", es:"Recorte rápido del flequillo."} },
+
+  // ============ HAIR + SCALP TREATMENTS ============
+  { id:'tr-scalp-spa', cat:'treatments', name:{en:"Hair + Scalp Spa", es:"Spa capilar + cuero cabelludo"}, price:135, duration:150,
+    desc:{en:"Luxury combo: scalp therapy + deep hair care for balance and growth.", es:"Combo de lujo: terapia del cuero cabelludo + cuidado profundo del cabello."} },
+  { id:'tr-scalp-detox', cat:'treatments', name:{en:"Scalp Detox", es:"Detox del cuero cabelludo"}, price:99, duration:90,
+    desc:{en:"Removes buildup, rebalances the scalp, promotes healthier growth.", es:"Limpia, rebalancea el cuero cabelludo y promueve crecimiento."} },
+  { id:'tr-keratin', cat:'treatments', name:{en:"Keratin Treatment", es:"Tratamiento de keratina"}, price:175, duration:120,
+    desc:{en:"Smooths, strengthens and reduces frizz — keeps volume.", es:"Suaviza, fortalece y reduce frizz manteniendo el volumen."} },
+  { id:'tr-hot-oil', cat:'treatments', name:{en:"Hot Oil Massage", es:"Masaje con aceite caliente"}, price:75, duration:20,
+    desc:{en:"Relaxing scalp massage with nourishing oils.", es:"Masaje relajante con aceites nutritivos."} },
+
+  // ============ ADD-ONS (under treatments) ============
+  { id:'add-scrub', cat:'treatments', name:{en:"Scalp Scrub", es:"Exfoliante cuero cabelludo"}, price:15, duration:10,
+    desc:{en:"Exfoliates and refreshes the scalp.", es:"Exfolia y refresca el cuero cabelludo."} },
+  { id:'add-shine', cat:'treatments', name:{en:"Shine Treatment", es:"Tratamiento de brillo"}, price:25, duration:30,
+    desc:{en:"Adds gloss and smoothness.", es:"Aporta brillo y suavidad."} },
+  { id:'add-hydrate', cat:'treatments', name:{en:"Hydrating Treatment", es:"Tratamiento hidratante"}, price:25, duration:30,
+    desc:{en:"Deeply nourishes dry or damaged hair.", es:"Nutre cabello seco o dañado."} },
+  { id:'add-k18', cat:'treatments', name:{en:"K18 Treatment", es:"Tratamiento K18"}, price:60, duration:30,
+    desc:{en:"Repairs and strengthens damaged hair at a molecular level.", es:"Repara y fortalece el cabello a nivel molecular."} },
+  { id:'add-olaplex', cat:'treatments', name:{en:"Olaplex Treatment", es:"Tratamiento Olaplex"}, price:55, duration:45,
+    desc:{en:"Rebuilds bonds inside the hair.", es:"Reconstruye los enlaces internos del cabello."} },
 
   // ============ EXTENSIONS ============
-  { id:'ext-consult',  cat:'extensions', name:{en:"Extensions Consultation", es:"Consulta extensiones"}, price:0,   duration:30, desc:{en:"Free, complimentary consult.", es:"Gratis, sin compromiso."} },
-  { id:'ext-tape',     cat:'extensions', name:{en:"Tape-in Extensions", es:"Extensiones tape-in"},   price:600, duration:180, desc:{en:"Hair + application included.", es:"Cabello + aplicación incluido."} },
-  { id:'ext-keratin',  cat:'extensions', name:{en:"Keratin K-tip Bonds", es:"Extensiones K-tip"},    price:1200,duration:300, desc:{en:"Premium individual bonds.", es:"Adheridos individuales premium."} },
-  { id:'ext-move-up',  cat:'extensions', name:{en:"Extensions Move-up", es:"Reubicación de extensiones"}, price:280, duration:120, desc:{en:"Maintenance every 6–8 weeks.", es:"Mantenimiento cada 6–8 semanas."} },
+  { id:'ext-tape', cat:'extensions', name:{en:"Tape-In Extensions", es:"Extensiones tape-in"}, price:200, duration:60,
+    desc:{en:"Install of tape-in extensions for added length and volume.", es:"Instalación de tape-in para más largo y volumen."} },
+  { id:'ext-itip', cat:'extensions', name:{en:"I-Tip Extensions", es:"Extensiones I-Tip"}, price:300, duration:120,
+    desc:{en:"Individual bead method for flexible, natural movement.", es:"Cuentas individuales para movimiento natural."} },
+  { id:'ext-keratin-tip', cat:'extensions', name:{en:"Keratin Tip Extensions", es:"Extensiones keratin tip"}, price:400, duration:120,
+    desc:{en:"Long-lasting bonded extensions for a seamless finish.", es:"Extensiones adheridas duraderas para acabado natural."} },
+  { id:'ext-removal', cat:'extensions', name:{en:"Extension Removal", es:"Remoción de extensiones"}, price:50, duration:45,
+    desc:{en:"Safe removal of any extension method.", es:"Remoción segura de cualquier tipo de extensión."} },
 ];
 
 const PACKAGES = [
@@ -63,27 +134,27 @@ const PACKAGES = [
     id:'signature-reset',
     titleKey:'packages.signature.title',
     descKey:'packages.signature.desc',
-    price:165,
-    duration:90,
+    price:179,
+    duration:130,
     image:'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&auto=format&fit=crop',
     includes:[
-      {en:'Scalp detox & steam', es:'Detox capilar y vapor'},
-      {en:'Custom blow-out', es:'Brushing personalizado'},
-      {en:'Brow shape', es:'Diseño de cejas'},
+      {en:'Scalp Detox treatment', es:'Detox del cuero cabelludo'},
+      {en:'Blowout Style', es:'Brushing con peinado'},
+      {en:'Brow Shaping', es:'Diseño de cejas'},
     ]
   },
   {
     id:'bridal-trial',
     titleKey:'packages.bridal.title',
     descKey:'packages.bridal.desc',
-    price:380,
-    duration:210,
+    price:340,
+    duration:225,
     image:'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=900&auto=format&fit=crop',
     includes:[
-      {en:'Bridal hair trial', es:'Prueba de peinado nupcial'},
-      {en:'Lash lift + tint', es:'Lifting y tinte de pestañas'},
-      {en:'Brow lamination', es:'Laminado de cejas'},
-      {en:'Glow facial', es:'Facial luminoso'},
+      {en:'Special Occasion Styling', es:'Peinado ocasión especial'},
+      {en:'Lash Lift', es:'Lifting de pestañas'},
+      {en:'Brow Lamination', es:'Laminado de cejas'},
+      {en:'Deep Cleansing Facial', es:'Facial limpieza profunda'},
     ]
   },
   {
@@ -91,13 +162,13 @@ const PACKAGES = [
     titleKey:'packages.deep.title',
     descKey:'packages.deep.desc',
     price:240,
-    duration:150,
+    duration:195,
     image:'https://images.unsplash.com/photo-1560869713-7d0a29430803?w=900&auto=format&fit=crop',
     includes:[
-      {en:'K18 bond repair', es:'Reparación K18'},
-      {en:'Olaplex No.1+2', es:'Olaplex No.1+2'},
-      {en:'Custom cut', es:'Corte personalizado'},
-      {en:'Gloss finish', es:'Acabado en gloss'},
+      {en:'K18 Treatment', es:'Tratamiento K18'},
+      {en:'Olaplex Treatment', es:'Tratamiento Olaplex'},
+      {en:'Haircut', es:'Corte de cabello'},
+      {en:'Glaze', es:'Glaze de brillo'},
     ]
   },
 ];
@@ -109,10 +180,10 @@ const STYLISTS = [
     role:{en:'Senior Color Specialist', es:'Especialista Senior en Color'},
     years:12,
     bio:{
-      en:"Trained at Bumble & bumble. Sofía specializes in dimensional balayage and color correction for textured hair.",
-      es:"Formada en Bumble & bumble. Sofía se especializa en balayage dimensional y corrección de color para cabello con textura."
+      en:"Trained at Bumble & bumble. Sofía specializes in dimensional balayage, foil highlights and color correction.",
+      es:"Formada en Bumble & bumble. Sofía se especializa en balayage dimensional, foils y corrección de color."
     },
-    specialties:['balayage','color-correct','full','partial'],
+    specialties:['col-full-light','col-face-frame','col-no-bleach','col-root','col-full','col-glaze','col-black-rem'],
     image:'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=600&auto=format&fit=crop'
   },
   {
@@ -121,10 +192,10 @@ const STYLISTS = [
     role:{en:'Senior Cuts & Styling', es:'Senior en Cortes y Peinado'},
     years:10,
     bio:{
-      en:"NYC veteran. Mia is known for soft, lived-in shapes and editorial blow-outs.",
-      es:"Veterana de NYC. Mia es conocida por cortes suaves y brushing editorial."
+      en:"NYC veteran. Mia is known for soft, lived-in shapes, editorial blow-outs and keratin work.",
+      es:"Veterana de NYC. Conocida por cortes suaves, brushing editorial y tratamientos de keratina."
     },
-    specialties:['cut-women','cut-men','keratin','glaze'],
+    specialties:['haircut','sty-blowout','sty-blowout-style','sty-formal','sty-special','tr-keratin','add-bang'],
     image:'https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=600&auto=format&fit=crop'
   },
   {
@@ -133,10 +204,10 @@ const STYLISTS = [
     role:{en:'Lash & Brow Artist', es:'Artista de Pestañas y Cejas'},
     years:8,
     bio:{
-      en:"Certified Lash Pro educator. Isabela's volume sets are obsession-worthy.",
-      es:"Educadora certificada Lash Pro. Sus sets de volumen son irresistibles."
+      en:"Certified Lash Pro educator. Isabela's brow laminations and mink sets are the most-requested in the loft.",
+      es:"Educadora certificada Lash Pro. Sus laminados y sets de mink son los más pedidos en el loft."
     },
-    specialties:['lash-lift','classic-set','volume-set','brow-shape','brow-lam','brow-tint'],
+    specialties:['brow-shape','brow-tint','brow-lam','lash-lift','lash-flare','lash-mink'],
     image:'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&auto=format&fit=crop'
   },
   {
@@ -145,10 +216,10 @@ const STYLISTS = [
     role:{en:'Esthetician & Skin Therapist', es:'Esteticista y Terapeuta de Piel'},
     years:9,
     bio:{
-      en:"French-trained esthetician focused on luminosity and skin barrier health.",
-      es:"Esteticista francesa enfocada en luminosidad y salud de la barrera cutánea."
+      en:"French-trained esthetician focused on luminosity, skin-barrier health and body waxing.",
+      es:"Esteticista francesa enfocada en luminosidad, salud de la barrera y depilación corporal."
     },
-    specialties:['signature-facial','glow-facial','deep-clean','hydrafacial','wax-face'],
+    specialties:['fac-express','fac-deep','fac-derma','wax-full-face','wax-back','wax-bikini','wax-brazilian','wax-brazilian-full'],
     image:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&auto=format&fit=crop'
   },
 ];
@@ -159,11 +230,9 @@ const TIME_SLOTS = [
   '16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'
 ];
 
-// Hardcoded "unavailable" pattern so the calendar feels real
 const BUSY_PATTERN = {
-  // weekday (0=Sun) -> array of busy times (always blocked these times)
   0: ['10:00','10:30','11:00','18:00','18:30','19:00','19:30'],
-  1: 'closed', // Monday
+  1: 'closed',
   2: ['12:00','13:00','15:30','17:30'],
   3: ['10:30','14:00','16:30','19:00'],
   4: ['11:30','12:30','15:00','18:30'],
@@ -171,37 +240,35 @@ const BUSY_PATTERN = {
   6: ['10:30','12:00','14:30','17:00','19:30']
 };
 
-// Reviews / testimonials
 const REVIEWS = [
-  { name:'Emma R.', rating:5, when:'2 weeks ago', service:{en:'Balayage + cut', es:'Balayage + corte'},
+  { name:'Emma R.', rating:5, when:'2 weeks ago', service:{en:'Full Lightening', es:'Aclarado completo'},
     text:{en:"Honestly the best color I've had in NYC. Sofía nailed it on the first try and the consultation was so detailed.", es:"Honestamente el mejor color que he tenido en NYC. Sofía lo clavó en el primer intento y la consulta fue super detallada."} },
-  { name:'Sophia A.', rating:5, when:'1 month ago', service:{en:'Lash lift + tint', es:'Lifting de pestañas'},
+  { name:'Sophia A.', rating:5, when:'1 month ago', service:{en:'Lash Lift + Brow Lamination', es:'Lifting + laminado'},
     text:{en:"Walked out feeling like myself but elevated. The space is so calm — I almost fell asleep.", es:"Salí sintiéndome yo, pero elevada. El lugar es tan tranquilo que casi me duermo."} },
-  { name:'Jenna T.', rating:5, when:'3 weeks ago', service:{en:'Bridal trial', es:'Prueba de novia'},
+  { name:'Jenna T.', rating:5, when:'3 weeks ago', service:{en:'Bridal Trial', es:'Prueba de novia'},
     text:{en:"Found my wedding day team. They listened, they took notes, and the trial was flawless.", es:"Encontré a mi equipo del día de la boda. Escucharon, tomaron notas y la prueba fue impecable."} },
-  { name:'Maria L.', rating:5, when:'1 week ago', service:{en:'HydraFacial', es:'HydraFacial'},
+  { name:'Maria L.', rating:5, when:'1 week ago', service:{en:'Deep Cleansing Facial', es:'Facial profundo'},
     text:{en:"My skin was glowing for weeks. Céline is a gift. Already booked my next two visits.", es:"Mi piel brilló por semanas. Céline es un regalo. Ya reservé mis próximas dos visitas."} },
-  { name:'Alyssa P.', rating:5, when:'5 days ago', service:{en:'Keratin smoothing', es:'Keratina'},
+  { name:'Alyssa P.', rating:5, when:'5 days ago', service:{en:'Keratin Treatment', es:'Keratina'},
     text:{en:"Frizz: gone. Curl pattern: still there. Mia explained every step — not pushy at all.", es:"Frizz: cero. Mi rizo: intacto. Mia explicó cada paso, sin presión."} },
 ];
 
-// Gallery items
 const GALLERY = [
   { cat:'color',   img:'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=900&auto=format&fit=crop' },
   { cat:'cuts',    img:'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&auto=format&fit=crop' },
-  { cat:'lashes',  img:'https://images.unsplash.com/photo-1583241800698-9c2e1f72a37b?w=900&auto=format&fit=crop' },
+  { cat:'lashes',  img:'https://images.unsplash.com/photo-1571908598047-29def2bbb7e0?w=900&auto=format&fit=crop' },
   { cat:'color',   img:'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&auto=format&fit=crop' },
   { cat:'bridal',  img:'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=900&auto=format&fit=crop' },
   { cat:'facials', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&auto=format&fit=crop' },
   { cat:'cuts',    img:'https://images.unsplash.com/photo-1493256338651-d82f7acb2b38?w=900&auto=format&fit=crop' },
   { cat:'color',   img:'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=900&auto=format&fit=crop' },
-  { cat:'lashes',  img:'https://images.unsplash.com/photo-1571908598047-29def2bbb7e0?w=900&auto=format&fit=crop' },
+  { cat:'lashes',  img:'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=900&auto=format&fit=crop' },
   { cat:'bridal',  img:'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=900&auto=format&fit=crop' },
   { cat:'facials', img:'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=900&auto=format&fit=crop' },
   { cat:'cuts',    img:'https://images.unsplash.com/photo-1599387737877-9f6e0aac1f29?w=900&auto=format&fit=crop' },
   { cat:'color',   img:'https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=900&auto=format&fit=crop' },
   { cat:'facials', img:'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=900&auto=format&fit=crop' },
-  { cat:'lashes',  img:'https://images.unsplash.com/photo-1571781565036-d3f759be73e4?w=900&auto=format&fit=crop' },
+  { cat:'lashes',  img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&auto=format&fit=crop' },
 ];
 
 window.SERVICES = SERVICES;
