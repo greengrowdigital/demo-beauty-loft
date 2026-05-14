@@ -196,6 +196,11 @@ const REVIEWS = [
 ];
 
 const GALLERY = [
+  { cat:'color',   img:'assets/img/real-balayage.jpg' },
+  { cat:'color',   img:'assets/img/real-highlights.jpg' },
+  { cat:'cuts',    img:'assets/img/real-brunette-curls.jpg' },
+  { cat:'cuts',    img:'assets/img/real-keratin.jpg' },
+  { cat:'facials', img:'assets/img/real-scalp-treatment.jpg' },
   { cat:'color',   img:'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=900&auto=format&fit=crop' },
   { cat:'cuts',    img:'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&auto=format&fit=crop' },
   { cat:'lashes',  img:'https://images.unsplash.com/photo-1571908598047-29def2bbb7e0?w=900&auto=format&fit=crop' },
@@ -207,9 +212,6 @@ const GALLERY = [
   { cat:'lashes',  img:'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=900&auto=format&fit=crop' },
   { cat:'bridal',  img:'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=900&auto=format&fit=crop' },
   { cat:'facials', img:'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=900&auto=format&fit=crop' },
-  { cat:'cuts',    img:'https://images.unsplash.com/photo-1599387737877-9f6e0aac1f29?w=900&auto=format&fit=crop' },
-  { cat:'color',   img:'https://images.unsplash.com/photo-1633681926022-84c23e8cb2d6?w=900&auto=format&fit=crop' },
-  { cat:'facials', img:'https://images.unsplash.com/photo-1487412947147-5cebf100ffc2?w=900&auto=format&fit=crop' },
   { cat:'lashes',  img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&auto=format&fit=crop' },
 ];
 

@@ -20,7 +20,7 @@ const I18N = {
     "nav.admin": "Admin",
 
     // Hero (home)
-    "hero.eyebrow": "Kips Bay · Manhattan · Est. 2021",
+    "hero.eyebrow": "Kips Bay · Manhattan · 10+ Years Licensed",
     "hero.title.line1": "The Beauty",
     "hero.title.line2": "Loft",
     "hero.script": "Welcome to your sanctuary",
@@ -259,7 +259,7 @@ const I18N = {
     "nav.bookNow": "Reservar",
     "nav.admin": "Admin",
 
-    "hero.eyebrow": "Kips Bay · Manhattan · Desde 2021",
+    "hero.eyebrow": "Kips Bay · Manhattan · +10 Años Con Licencia",
     "hero.title.line1": "The Beauty",
     "hero.title.line2": "Loft",
     "hero.script": "Bienvenida a tu santuario",
