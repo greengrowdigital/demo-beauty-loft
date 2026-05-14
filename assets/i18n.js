@@ -6,7 +6,7 @@
 const I18N = {
   en: {
     // Top bar
-    "top.bar": "Open Mon–Fri · 240 E 28th Street, Kips Bay NY · Walk-ins welcome",
+    "top.bar": "Open Tue–Sun · 240 E 28th Street, Kips Bay NY · Walk-ins welcome",
     "top.cta": "Book your appointment",
 
     // Nav
@@ -116,9 +116,8 @@ const I18N = {
     "footer.gallery": "Gallery",
     "footer.contact": "Contact",
     "footer.hours.title": "Hours",
-    "footer.hours.weekdays": "Mon–Fri · 9am – 5pm",
-    "footer.hours.sat": "Saturday · Closed",
-    "footer.hours.sun": "Sunday · Closed",
+    "footer.hours.weekdays": "Tue–Sun · 9am – 5pm",
+    "footer.hours.sat": "Monday · Closed",
     "footer.find.title": "Find us",
     "footer.address": "240 E 28th Street, New York, NY 10016",
     "footer.newsletter.title": "Stay in the loft",
@@ -246,7 +245,7 @@ const I18N = {
   },
 
   es: {
-    "top.bar": "Abierto Lun–Vie · 240 E 28th Street, Kips Bay NY · Sin cita previa también",
+    "top.bar": "Abierto Mar–Dom · 240 E 28th Street, Kips Bay NY · Sin cita previa también",
     "top.cta": "Reserva tu cita",
 
     "nav.home": "Inicio",
@@ -345,9 +344,8 @@ const I18N = {
     "footer.gallery": "Galería",
     "footer.contact": "Contacto",
     "footer.hours.title": "Horario",
-    "footer.hours.weekdays": "Lun–Vie · 9am – 5pm",
-    "footer.hours.sat": "Sábado · Cerrado",
-    "footer.hours.sun": "Domingo · Cerrado",
+    "footer.hours.weekdays": "Mar–Dom · 9am – 5pm",
+    "footer.hours.sat": "Lunes · Cerrado",
     "footer.find.title": "Encuéntranos",
     "footer.address": "240 E 28th Street, New York, NY 10016",
     "footer.newsletter.title": "Mantente en el loft",
