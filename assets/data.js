@@ -197,8 +197,11 @@ const REVIEWS = [
 
 const GALLERY = [
   { cat:'color',   img:'assets/img/real-balayage.jpg' },
+  { cat:'color',   img:'assets/img/real-color-highlights.jpg' },
   { cat:'color',   img:'assets/img/real-highlights.jpg' },
   { cat:'cuts',    img:'assets/img/real-brunette-curls.jpg' },
+  { cat:'cuts',    img:'assets/img/real-blowout-bangs.jpg' },
+  { cat:'cuts',    img:'assets/img/real-long-extensions.jpg' },
   { cat:'cuts',    img:'assets/img/real-keratin.jpg' },
   { cat:'facials', img:'assets/img/real-scalp-treatment.jpg' },
   { cat:'color',   img:'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=900&auto=format&fit=crop' },
