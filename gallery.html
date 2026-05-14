@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="assets/img/logo.png?v=2">
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Inter:wght@300;400;500;600;700&family=Italianno&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="assets/main.css?v=9" />
+<link rel="stylesheet" href="assets/main.css?v=10" />
 <style>
 .gallery-grid { columns: 2; column-gap: 12px; }
 @media(min-width:768px){ .gallery-grid{ columns: 3; } }
@@ -16,10 +16,14 @@
 .gallery-grid > * { break-inside: avoid; margin-bottom: 12px; display:block; }
 .lightbox { position:fixed; inset:0; z-index:9000; background:rgba(0,0,0,.96); display:none; align-items:center; justify-content:center; padding:20px; }
 .lightbox.open { display:flex; }
-.lightbox img { max-width:92vw; max-height:88vh; object-fit:contain; box-shadow:0 32px 80px rgba(212,175,55,.3); }
+.lightbox img, .lightbox video { max-width:92vw; max-height:88vh; object-fit:contain; box-shadow:0 32px 80px rgba(212,175,55,.3); }
 .lb-close { position:absolute; top:24px; right:24px; width:48px; height:48px; border:1px solid #d4af37; color:#d4af37; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:24px; }
 .lb-prev,.lb-next { position:absolute; top:50%; transform:translateY(-50%); width:48px; height:48px; border:1px solid #d4af37; color:#d4af37; display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:28px; }
 .lb-prev{ left:24px; } .lb-next{ right:24px; }
+.video-badge { position:absolute; top:10px; right:10px; width:30px; height:30px; border-radius:50%; background:rgba(212,175,55,.92); color:#000; display:flex; align-items:center; justify-content:center; pointer-events:none; box-shadow:0 4px 12px rgba(0,0,0,.4); }
+.video-badge svg { width:14px; height:14px; }
+.gallery-grid a { position:relative; }
+.gallery-grid video { width:100%; display:block; }
 </style>
 </head>
 <body>
@@ -105,7 +109,8 @@
   <button class="lb-close" id="lb-close">×</button>
   <button class="lb-prev" id="lb-prev">‹</button>
   <button class="lb-next" id="lb-next">›</button>
-  <img id="lb-img" src="" alt="">
+  <img id="lb-img" src="" alt="" style="display:none">
+  <video id="lb-video" src="" controls playsinline style="display:none"></video>
 </div>
 
 <!-- CTA -->
@@ -123,21 +128,32 @@
   </div>
 </footer>
 
-<script src="assets/i18n.js?v=9"></script>
-<script src="assets/data.js?v=9"></script>
-<script src="assets/app.js?v=9"></script>
+<script src="assets/i18n.js?v=10"></script>
+<script src="assets/data.js?v=10"></script>
+<script src="assets/app.js?v=10"></script>
 <script>
 let activeCat = 'all';
 let visibleItems = [];
 const grid = document.getElementById('gallery');
 
+const isVideo = g => g.type === 'video' || (g.src && /\.(mp4|webm|mov)$/i.test(g.src));
+const PLAY_BADGE = `<span class="video-badge"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>`;
+
 function renderGallery() {
   visibleItems = activeCat === 'all' ? GALLERY : GALLERY.filter(g => g.cat === activeCat);
-  grid.innerHTML = visibleItems.map((g, i) => `
-    <a href="#" data-idx="${i}" class="block card-image">
-      <img src="${g.img}" alt="${g.cat}" class="w-full" loading="lazy">
-    </a>
-  `).join('');
+  grid.innerHTML = visibleItems.map((g, i) => {
+    if (isVideo(g)) {
+      return `
+        <a href="#" data-idx="${i}" class="block card-image">
+          <video src="${g.src}" poster="${g.poster || ''}" muted loop playsinline autoplay preload="metadata"></video>
+          ${PLAY_BADGE}
+        </a>`;
+    }
+    return `
+      <a href="#" data-idx="${i}" class="block card-image">
+        <img src="${g.img}" alt="${g.cat}" class="w-full" loading="lazy">
+      </a>`;
+  }).join('');
   grid.querySelectorAll('a').forEach(a => {
     a.addEventListener('click', e => {
       e.preventDefault();
@@ -157,10 +173,24 @@ document.querySelectorAll('.g-tab').forEach(t => {
 
 const lb = document.getElementById('lightbox');
 const lbImg = document.getElementById('lb-img');
+const lbVid = document.getElementById('lb-video');
 let lbIdx = 0;
-function openLightbox(i){ lbIdx = i; lbImg.src = visibleItems[i].img; lb.classList.add('open'); }
-function closeLightbox(){ lb.classList.remove('open'); }
-function nav(d){ lbIdx = (lbIdx + d + visibleItems.length) % visibleItems.length; lbImg.src = visibleItems[lbIdx].img; }
+function showLbItem(item){
+  if (isVideo(item)) {
+    lbImg.style.display = 'none';
+    lbImg.src = '';
+    lbVid.style.display = 'block';
+    lbVid.src = item.src;
+    lbVid.play().catch(()=>{});
+  } else {
+    lbVid.pause(); lbVid.src = ''; lbVid.style.display = 'none';
+    lbImg.src = item.img;
+    lbImg.style.display = 'block';
+  }
+}
+function openLightbox(i){ lbIdx = i; showLbItem(visibleItems[i]); lb.classList.add('open'); }
+function closeLightbox(){ lb.classList.remove('open'); lbVid.pause(); lbVid.src = ''; }
+function nav(d){ lbIdx = (lbIdx + d + visibleItems.length) % visibleItems.length; showLbItem(visibleItems[lbIdx]); }
 document.getElementById('lb-close').addEventListener('click', closeLightbox);
 document.getElementById('lb-prev').addEventListener('click', () => nav(-1));
 document.getElementById('lb-next').addEventListener('click', () => nav(1));

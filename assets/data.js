@@ -196,6 +196,14 @@ const REVIEWS = [
 ];
 
 const GALLERY = [
+  // Real videos (reels)
+  { type:'video', cat:'cuts',    src:'assets/video/real-reel-1.mp4', poster:'assets/img/real-blowout-bangs.jpg' },
+  { type:'video', cat:'color',   src:'assets/video/real-reel-5.mp4', poster:'assets/img/real-color-highlights.jpg' },
+  { type:'video', cat:'cuts',    src:'assets/video/real-reel-2.mp4', poster:'assets/img/real-long-extensions.jpg' },
+  { type:'video', cat:'color',   src:'assets/video/real-reel-4.mp4', poster:'assets/img/real-balayage.jpg' },
+  { type:'video', cat:'cuts',    src:'assets/video/real-reel-6.mp4', poster:'assets/img/real-brunette-curls.jpg' },
+  { type:'video', cat:'cuts',    src:'assets/video/real-reel-3.mp4', poster:'assets/img/real-keratin.jpg' },
+  // Real photos
   { cat:'color',   img:'assets/img/real-balayage.jpg' },
   { cat:'color',   img:'assets/img/real-color-highlights.jpg' },
   { cat:'color',   img:'assets/img/real-highlights.jpg' },
