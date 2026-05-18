@@ -169,6 +169,13 @@ body{
 .home-play-badge{ position:absolute; top:12px; right:12px; width:34px; height:34px; border-radius:50%; background:rgba(212,175,55,.92); color:#000; display:flex; align-items:center; justify-content:center; pointer-events:none; box-shadow:0 4px 12px rgba(0,0,0,.4); z-index:2; }
 .home-play-badge svg{ width:14px; height:14px; }
 
+/* ================ Instagram embed grid ================ */
+.ig-grid{ align-items:start; }
+.ig-cell{ display:flex; justify-content:center; min-height:540px; }
+.ig-cell .instagram-media{ margin:0 !important; max-width:100% !important; min-width:0 !important; width:100% !important; box-shadow:0 20px 60px -20px rgba(212,175,55,.25), 0 8px 24px rgba(0,0,0,.6) !important; border-radius:12px !important; overflow:hidden; }
+.ig-cell iframe{ max-width:100% !important; }
+@media(max-width:639px){ .ig-cell{ min-height:auto; } }
+
 /* ================ Service icon (gold ring like Instagram) ================ */
 .service-orb{
   width:96px; height:96px; border-radius:50%;
