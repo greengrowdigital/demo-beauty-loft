@@ -115,56 +115,8 @@ const SERVICES = [
 // Packages removed — not in client's service list.
 const PACKAGES = [];
 
-const STYLISTS = [
-  {
-    id:'sofia',
-    name:'Sofía Reyes',
-    role:{en:'Senior Color Specialist', es:'Especialista Senior en Color'},
-    years:12,
-    bio:{
-      en:"Trained at Bumble & bumble. Sofía specializes in dimensional balayage, foil highlights and color correction.",
-      es:"Formada en Bumble & bumble. Sofía se especializa en balayage dimensional, foils y corrección de color."
-    },
-    specialties:['col-full-light','col-face-frame','col-no-bleach','col-root','col-full','col-glaze'],
-    image:'https://images.unsplash.com/photo-1580618672591-eb180b1a973f?w=600&auto=format&fit=crop'
-  },
-  {
-    id:'mia',
-    name:'Mia Chen',
-    role:{en:'Senior Cuts & Styling', es:'Senior en Cortes y Peinado'},
-    years:10,
-    bio:{
-      en:"NYC veteran. Mia is known for soft, lived-in shapes, editorial styling and keratin work.",
-      es:"Veterana de NYC. Conocida por cortes suaves, peinados editoriales y tratamientos de keratina."
-    },
-    specialties:['haircut','sty-formal','sty-special','tr-keratin','perfect-match'],
-    image:'https://images.unsplash.com/photo-1607746882042-944635dfe10e?w=600&auto=format&fit=crop'
-  },
-  {
-    id:'isabela',
-    name:'Isabela Marín',
-    role:{en:'Lash & Brow Artist', es:'Artista de Pestañas y Cejas'},
-    years:8,
-    bio:{
-      en:"Certified Lash Pro educator. Isabela's brow work and mink sets are the most-requested in the loft.",
-      es:"Educadora certificada Lash Pro. Sus cejas y sets de mink son los más pedidos en el loft."
-    },
-    specialties:['ppb','lash-lift','lash-tint','lash-flare','lash-mink'],
-    image:'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=600&auto=format&fit=crop'
-  },
-  {
-    id:'celine',
-    name:'Céline Dubois',
-    role:{en:'Esthetician & Skin Therapist', es:'Esteticista y Terapeuta de Piel'},
-    years:9,
-    bio:{
-      en:"French-trained esthetician focused on luminosity, sculpting and skin-barrier health.",
-      es:"Esteticista francesa enfocada en luminosidad, contouring y salud de la barrera cutánea."
-    },
-    specialties:['fac-express','fac-sculpt','fac-lymph','glow-getter','wax-full-face','wax-full-body'],
-    image:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&auto=format&fit=crop'
-  },
-];
+// Real team profiles pending — Naveen + colleague headshots to be added.
+const STYLISTS = [];
 
 const TIME_SLOTS = [
   '09:00','09:30','10:00','10:30','11:00','11:30',
@@ -212,18 +164,6 @@ const GALLERY = [
   { cat:'cuts',    img:'assets/img/real-long-extensions.jpg' },
   { cat:'cuts',    img:'assets/img/real-keratin.jpg' },
   { cat:'facials', img:'assets/img/real-scalp-treatment.jpg' },
-  { cat:'color',   img:'https://images.unsplash.com/photo-1605497788044-5a32c7078486?w=900&auto=format&fit=crop' },
-  { cat:'cuts',    img:'https://images.unsplash.com/photo-1560066984-138dadb4c035?w=900&auto=format&fit=crop' },
-  { cat:'lashes',  img:'https://images.unsplash.com/photo-1571908598047-29def2bbb7e0?w=900&auto=format&fit=crop' },
-  { cat:'color',   img:'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=900&auto=format&fit=crop' },
-  { cat:'bridal',  img:'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=900&auto=format&fit=crop' },
-  { cat:'facials', img:'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=900&auto=format&fit=crop' },
-  { cat:'cuts',    img:'https://images.unsplash.com/photo-1493256338651-d82f7acb2b38?w=900&auto=format&fit=crop' },
-  { cat:'color',   img:'https://images.unsplash.com/photo-1492106087820-71f1a00d2b11?w=900&auto=format&fit=crop' },
-  { cat:'lashes',  img:'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?w=900&auto=format&fit=crop' },
-  { cat:'bridal',  img:'https://images.unsplash.com/photo-1469371670807-013ccf25f16a?w=900&auto=format&fit=crop' },
-  { cat:'facials', img:'https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=900&auto=format&fit=crop' },
-  { cat:'lashes',  img:'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=900&auto=format&fit=crop' },
 ];
 
 window.SERVICES = SERVICES;
